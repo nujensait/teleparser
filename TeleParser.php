@@ -52,7 +52,7 @@ class TeleParser
         $crawler->filter('a')->each(function (Crawler $node) use ($domain, $depth, $baseDir, &$visited) {
             $link = $node->attr('href');
             if ($link && strpos($link, $domain) === 0) {
-                downloadPage($link, $depth - 1, $baseDir, $visited);
+                $this->downloadPage($link, $depth - 1, $baseDir, $visited);
             }
         });
 
@@ -104,7 +104,7 @@ class TeleParser
                 $localPath = $baseDir . parse_url($href, PHP_URL_PATH);
                 $node->getNode(0)->setAttribute('href', $localPath);
             } else {
-                $node->getNode(0)->setAttribute('onclick', 'return confirm("страница не скачана, открыть ее в интернете?");');
+                $node->getNode(0)->setAttribute('onclick', 'return confirm("Cтраница не скачана, открыть ее в интернете?");');
             }
         });
 

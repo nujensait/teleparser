@@ -1,5 +1,7 @@
 <?php
 
+require_once ("TeleParser.php");
+
 /**
  * Run parsing
  */

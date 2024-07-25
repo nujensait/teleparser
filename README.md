@@ -21,7 +21,9 @@
 при выборе Нет - ничего не делать.
 
 ## Установка 
+Выполните команды:
 ```
+git clone git@github.com:nujensait/teleparser.git
 composer require fabpot/goutte
 ```
 
@@ -32,7 +34,7 @@ http://teleparser/index.php
 - Или с конкретными настройками:
 http://teleparser/index.php?url=https://www.zabbix.com/documentation/5.0/ru/manual&depth=1
 
-- Нажать на кнопку "Парсить"
+- Нажать на кнопку "Запуск"
 
 ## Контакты
 Mikhail Ikonnikov <mishaikon@gmail.com>
