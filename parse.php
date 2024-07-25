@@ -8,15 +8,27 @@ require_once ("TeleParser.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $url     = $_POST['url'];
-    $depth   = (int)$_POST['depth'];
-    $baseDir = 'local_copy';
+    $parser   = new TeleParser();
+    $url      = trim($_POST['url']);
+    $depth    = (int)$_POST['depth'];
+    $baseDir  = 'downloads';
+    $baseDir .= "/" . $parser->getDomainFromUrl($url);
 
-    $parser = new TeleParser();
+    echo '<div class="container">';
+
+    echo "<p>Начало парсинга ...</p><br />\n";
+    if(is_dir($baseDir)) {
+        $parser->deleteDirectory($baseDir);
+        echo "<p>Удалена старая папка с файлами от предыдущего парсинга: <br />" . $baseDir . "</p><br />\n";
+    }
+
+    // Do parsing
     $parser->downloadPage($url, $depth, $baseDir);
 
+    echo "<p>Парсинг успешно выполнен.</p><br />\n";
+
     // Display links to downloaded files
-    echo '<h2>Скачанные файлы:</h2>';
+    echo '<h3>Скачанные файлы</h3>';
     echo '<ul>';
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($baseDir));
     foreach ($iterator as $file) {
@@ -26,4 +38,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     echo '</ul>';
+    echo '</div><!-- "container" -->';
 }

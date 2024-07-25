@@ -29,7 +29,7 @@ class TeleParser
         $parsedUrl = parse_url($url);
         $domain    = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
         $path      = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
-        $localPath = $baseDir . $path;
+        $localPath = $baseDir . $path . '.html';
 
         if (substr($localPath, -1) === '/') {
             $localPath .= 'index.html';
@@ -95,6 +95,13 @@ class TeleParser
         }
     }
 
+    /**
+     * @param $html
+     * @param $baseDir
+     * @param $domain
+     *
+     * @return mixed
+     */
     private function replaceLinks($html, $baseDir, $domain)
     {
         $crawler = new Crawler($html);
@@ -109,6 +116,49 @@ class TeleParser
         });
 
         return $crawler->html();
+    }
+
+    /**
+     * Extracts the domain from a given URL.
+     *
+     * @param string $url The URL to extract the domain from.
+     * @return string The extracted domain.
+     */
+    public function getDomainFromUrl($url)
+    {
+        // Parse the URL and get the host component
+        $parsedUrl = parse_url($url, PHP_URL_HOST);
+
+        // Remove 'www.' prefix if present
+        $domain = preg_replace('/^www\./', '', $parsedUrl);
+
+        return $domain;
+    }
+
+    /**
+     * Deletes a directory and all its contents (files and subdirectories).
+     *
+     * @param string $dir The path to the directory to delete.
+     * @return bool True on success, false on failure.
+     */
+    public function deleteDirectory($dir)
+    {
+        if (!is_dir($dir)) {
+            return false;
+        }
+
+        $items = array_diff(scandir($dir), ['.', '..']);
+
+        foreach ($items as $item) {
+            $path = $dir . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($path)) {
+                $this->deleteDirectory($path);
+            } else {
+                unlink($path);
+            }
+        }
+
+        return rmdir($dir);
     }
 }
 
