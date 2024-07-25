@@ -21,15 +21,15 @@ class TeleParser
             return;
         }
 
-        $visited[] = $url;
-        $client    = new Client();
-        $crawler   = $client->request('GET', $url);
+        $visited[]      = $url;
+        $client         = new Client();
+        $crawler        = $client->request('GET', $url);
 
-        $html      = $crawler->html();
-        $parsedUrl = parse_url($url);
-        $domain    = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
-        $path      = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
-        $localPath = $baseDir . $path . '.html';
+        $html           = $crawler->html();
+        $parsedUrl      = parse_url($url);
+        $domain         = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+        $path           = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
+        $localPath      = $baseDir . $path . '.html';
 
         if (substr($localPath, -1) === '/') {
             $localPath .= 'index.html';
@@ -43,10 +43,14 @@ class TeleParser
             }
         }
 
-        file_put_contents($localPath, $html);
+        // Download and replace external resources
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDir, $baseDir, $html);
 
-        // Download CSS, JS, and Images
-        $this->downloadResources($crawler, $domain, $localDir, $baseDir);
+        // Download html
+        //$this->downloadResources($crawler, $domain, $localDir, $baseDir);
+
+        // Save the modified HTML
+        file_put_contents($localPath, $html);
 
         // Process internal links
         $crawler->filter('a')->each(function (Crawler $node) use ($domain, $depth, $baseDir, &$visited) {
@@ -57,8 +61,49 @@ class TeleParser
         });
 
         // Replace links in HTML
-        $html = $this->replaceLinks($html, $baseDir, $domain);
-        file_put_contents($localPath, $html);
+        //$html = $this->replaceLinks($html, $baseDir, $domain);
+        //file_put_contents($localPath, $html);
+    }
+
+    /**
+     * Download external resources and update the HTML to use local file paths.
+     *
+     * @param Crawler $crawler The crawler instance.
+     * @param string $domain The domain of the current URL.
+     * @param string $localDir The local directory to save the resources.
+     * @param string $baseDir The base directory for saving files.
+     * @param string $html The HTML content to update.
+     * @return string The updated HTML content.
+     */
+    private function downloadAndReplaceResources(Crawler $crawler, $domain, $localDir, $baseDir, $html)
+    {
+        $resources = [];
+        $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
+            $tag = $node->nodeName();
+            $attr = ($tag === 'link') ? 'href' : 'src';
+            $url = $node->attr($attr);
+            if ($url && strpos($url, $domain) === 0) {
+                $resources[] = $url;
+            }
+        });
+
+        foreach ($resources as $resourceUrl) {
+            $localPath = $baseDir . parse_url($resourceUrl, PHP_URL_PATH);
+            $localDir = dirname($localPath);
+            if (!file_exists($localDir)) {
+                if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
+                }
+            }
+
+            $content = file_get_contents($resourceUrl);
+            file_put_contents($localPath, $content);
+
+            // Replace URLs in the HTML content
+            $html = str_replace($resourceUrl, $localPath, $html);
+        }
+
+        return $html;
     }
 
     /**
@@ -82,7 +127,7 @@ class TeleParser
         });
 
         foreach ($resources as $resourceUrl) {
-            $localPath = $baseDir . parse_url($resourceUrl, PHP_URL_PATH);
+            $localPath = $baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
             $localDir  = dirname($localPath);
             if (!file_exists($localDir)) {
                 if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
@@ -108,7 +153,7 @@ class TeleParser
         $crawler->filter('a')->each(function (Crawler $node) use ($baseDir, $domain) {
             $href = $node->attr('href');
             if ($href && strpos($href, $domain) === 0) {
-                $localPath = $baseDir . parse_url($href, PHP_URL_PATH);
+                $localPath = $baseDir . parse_url($href, PHP_URL_PATH); // . '.html';
                 $node->getNode(0)->setAttribute('href', $localPath);
             } else {
                 $node->getNode(0)->setAttribute('onclick', 'return confirm("Cтраница не скачана, открыть ее в интернете?");');
