@@ -1,7 +1,7 @@
 <?php
 
 // Set the maximum execution time to 300 seconds (5 minutes)
-set_time_limit(300);
+set_time_limit(60 * 10);    // timeout 10 min
 
 require_once "TeleParser.php";
 
