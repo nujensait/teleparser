@@ -35,11 +35,11 @@
     <h1 class="center-align">Парсер сайта</h1>
     <form id="parseForm" method="post" action="index.php">
         <div class="input-field">
-            <input type="text" id="url" name="url" required value="<?= ($_REQUEST['url'] ?: '') ?>"/>
+            <input type="text" id="url" name="url" required value="<?= (isset($_REQUEST['url']) ? $_REQUEST['url'] : '') ?>"/>
             <label for="url">Адрес стартовой страницы (URL): </label>
         </div>
         <div class="input-field">
-            <input type="number" id="depth" name="depth" min="1" required value="<?= ($_REQUEST['depth'] ?: '') ?>"/>
+            <input type="number" id="depth" name="depth" min="1" required value="<?= (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 1) ?>"/>
             <label for="depth">Глубина парсинга: </label>
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Запуск
