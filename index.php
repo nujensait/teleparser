@@ -28,6 +28,10 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .req {
+            color: orangered;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -36,11 +40,15 @@
     <form id="parseForm" method="post" action="index.php">
         <div class="input-field">
             <input type="text" id="url" name="url" required value="<?= (isset($_REQUEST['url']) ? $_REQUEST['url'] : '') ?>"/>
-            <label for="url">Адрес стартовой страницы (URL): </label>
+            <label for="url">Адрес стартовой страницы (URL): <small class="req">*</small></label>
         </div>
         <div class="input-field">
-            <input type="number" id="depth" name="depth" min="1" required value="<?= (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 1) ?>"/>
-            <label for="depth">Глубина парсинга: </label>
+            <input type="number" id="depth" name="depth" min="1" max="10" required value="<?= (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 1) ?>"/>
+            <label for="depth">Глубина парсинга: <small class="req">*</small></label>
+        </div>
+        <div class="input-field">
+            <input type="text" id="pattern" name="pattern" value="<?= (isset($_REQUEST['pattern']) ? $_REQUEST['pattern'] : '') ?>"/>
+            <label for="depth">Шаблон ссылок для парсинга: </label>
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Запуск
             <i class="material-icons right">send</i>
@@ -58,8 +66,5 @@
 </script>
 </body>
 </html>
-<?php
 
-require_once ("parse.php");
-
-?>
+<?php require_once ("parse.php"); ?>
