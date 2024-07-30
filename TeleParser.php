@@ -71,7 +71,7 @@ class TeleParser
             $link = $node->attr('href');
             $this->log("[ " . $link . " ]");
             // parse links only from the same domain
-            if ($link && (strpos($link, $domain) === 0 || substr($link, 0, 1) == '/')) {
+            if ($link && (strpos($link, $domain) === 0 || substr($link, 0, 1) === '/')) {
                 // if pattern isset, filter links by pattern
                 if($pattern && strpos($link, $pattern) === false) {
                     $this->log(" - SKIP (by pattern)\n");
@@ -92,7 +92,7 @@ class TeleParser
     /**
      * @param $message
      *
-     * @return void
+     * @return bool
      */
     private function log($message)
     {

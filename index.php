@@ -55,15 +55,15 @@
     <h1 class="center-align">Парсер сайта</h1>
     <form id="parseForm" method="post" action="index.php">
         <div class="input-field">
-            <input type="text" id="url" name="url" required value="<?= (isset($_REQUEST['url']) ? $_REQUEST['url'] : '') ?>"/>
+            <input type="text" id="url" name="url" required value="<?= (isset($_REQUEST['url']) ? $_REQUEST['url'] : 'https://www.zabbix.com/documentation/5.0/ru/manual') ?>"/>
             <label for="url">Адрес стартовой страницы (URL): <small class="req">*</small></label>
         </div>
         <div class="input-field">
-            <input type="number" id="depth" name="depth" min="1" max="10" required value="<?= (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 1) ?>"/>
+            <input type="number" id="depth" name="depth" min="0" max="10" required value="<?= (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 1) ?>"/>
             <label for="depth">Глубина парсинга: <small class="req">*</small></label>
         </div>
         <div class="input-field">
-            <input type="text" id="pattern" name="pattern" value="<?= (isset($_REQUEST['pattern']) ? $_REQUEST['pattern'] : '') ?>"/>
+            <input type="text" id="pattern" name="pattern" value="<?= (isset($_REQUEST['pattern']) ? $_REQUEST['pattern'] : 'documentation/5.0/ru/manual') ?>"/>
             <label for="depth">Шаблон ссылок для парсинга: </label>
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Запуск
