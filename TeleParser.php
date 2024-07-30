@@ -10,9 +10,33 @@ class TeleParser
     private $baseDir = 'downloads';         // directory to save htmls
     private $parsedUrls = [];               // parsed links array
 
+    private $db;                            // SQLite DB connection
+
     public function __construct($baseDir)
     {
         $this->baseDir = $baseDir;
+        $this->initDatabase();
+    }
+
+    public function __destruct()
+    {
+        $this->db->close();
+    }
+
+    /**
+     * @return void
+     */
+    private function initDatabase()
+    {
+        $this->db = new SQLite3('db/teleparser.db');
+        $this->db->exec('CREATE TABLE IF NOT EXISTS parsing (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            start_time DATETIME,
+            finish_time DATETIME,
+            url TEXT,
+            depth INTEGER,
+            pattern TEXT
+        )');
     }
 
     /**
@@ -24,12 +48,17 @@ class TeleParser
      */
     public function downloadPage($url, $pattern, $depth, $visited = [])
     {
+        $startTime = date('Y-m-d H:i:s');
+        $parsingId = $this->insertParsingStart($url, $depth, $pattern);
+
         if ($depth < 0 || in_array($url, $visited)) {
+            $this->updateParsingFinish($parsingId);
             return;
         }
 
         // already parsed?
         if(in_array($url, $this->parsedUrls)) {
+            $this->updateParsingFinish($parsingId);
             return;
         }
 
@@ -87,6 +116,37 @@ class TeleParser
         // Replace links in HTML
         //$html = $this->replaceLinks($html, $baseDir, $domain);
         //file_put_contents($localPath, $html);
+    }
+
+    /**
+     * @param $url
+     * @param $depth
+     * @param $pattern
+     *
+     * @return mixed
+     */
+    private function insertParsingStart($url, $depth, $pattern)
+    {
+        $stmt = $this->db->prepare('INSERT INTO parsing (start_time, url, depth, pattern) VALUES (:start_time, :url, :depth, :pattern)');
+        $stmt->bindValue(':start_time', date('Y-m-d H:i:s'), SQLITE3_TEXT);
+        $stmt->bindValue(':url', $url, SQLITE3_TEXT);
+        $stmt->bindValue(':depth', $depth, SQLITE3_INTEGER);
+        $stmt->bindValue(':pattern', $pattern, SQLITE3_TEXT);
+        $stmt->execute();
+        return $this->db->lastInsertRowID();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return void
+     */
+    private function updateParsingFinish($id)
+    {
+        $stmt = $this->db->prepare('UPDATE parsing SET finish_time = :finish_time WHERE id = :id');
+        $stmt->bindValue(':finish_time', date('Y-m-d H:i:s'), SQLITE3_TEXT);
+        $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+        $stmt->execute();
     }
 
     /**
