@@ -115,7 +115,7 @@ class TeleParser
                     $this->log(" - SKIP (by pattern)\n");
                     return;
                 }
-                $this->log( " - Dowloading ...\n");
+                $this->log( " - QUEUED ...\n");
                 $this->downloadPage($link, $pattern, $depth - 1,  $visited);
             } else {
                 $this->log(" - SKIP (by domain)\n");
@@ -233,6 +233,7 @@ class TeleParser
         foreach ($resources as $resourceUrl) {
             $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);
             $localDir = dirname($localPath);
+
             if (!file_exists($localDir)) {
                 if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
