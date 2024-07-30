@@ -7,6 +7,11 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class TeleParser
 {
+    const STATUS_INIT   = 'init';
+    const STATUS_START  = 'start';
+    const STATUS_FINISH = 'finish';
+    const STATUS_SKIP   = 'skip';
+
     private $baseDir = 'downloads';         // directory to save htmls
     private $parsedUrls = [];               // parsed links array
 
@@ -34,8 +39,11 @@ class TeleParser
             start_time DATETIME,
             finish_time DATETIME,
             url TEXT,
+            file TEXT,
             depth INTEGER,
-            pattern TEXT
+            pattern TEXT,   
+            status VARCHAR(20),
+            message TEXT
         )');
     }
 
@@ -48,17 +56,16 @@ class TeleParser
      */
     public function downloadPage($url, $pattern, $depth, $visited = [])
     {
-        $startTime = date('Y-m-d H:i:s');
-        $parsingId = $this->insertParsingStart($url, $depth, $pattern);
-
-        if ($depth < 0 || in_array($url, $visited)) {
-            $this->updateParsingFinish($parsingId);
+        // too deep?
+        if ($depth < 0) {
             return;
         }
 
+        $parsingId = $this->insertParsingStart($url, $depth, $pattern);
+
         // already parsed?
-        if(in_array($url, $this->parsedUrls)) {
-            $this->updateParsingFinish($parsingId);
+        if(in_array($url, $visited) || in_array($url, $this->parsedUrls)) {
+            $this->updateParsing($parsingId, ['status' => self::STATUS_SKIP, 'message' => 'Already parsed.']);
             return;
         }
 
@@ -93,6 +100,8 @@ class TeleParser
         // Save the modified HTML
         file_put_contents($localPath, $html);
 
+        $this->updateParsing($parsingId, ['file' => $localPath]);
+
         $this->parsedUrls[] = $url;
 
         // Process internal links
@@ -113,12 +122,15 @@ class TeleParser
             }
         });
 
+        $this->updateParsingFinish($parsingId);
+
         // Replace links in HTML
         //$html = $this->replaceLinks($html, $baseDir, $domain);
         //file_put_contents($localPath, $html);
     }
 
     /**
+     * Store parsing into DB
      * @param $url
      * @param $depth
      * @param $pattern
@@ -132,24 +144,55 @@ class TeleParser
         $stmt->bindValue(':url', $url, SQLITE3_TEXT);
         $stmt->bindValue(':depth', $depth, SQLITE3_INTEGER);
         $stmt->bindValue(':pattern', $pattern, SQLITE3_TEXT);
+        $stmt->bindValue(':status', self::STATUS_START, SQLITE3_TEXT);
+
         $stmt->execute();
+
         return $this->db->lastInsertRowID();
     }
 
     /**
+     * Update parsing status
      * @param $id
      *
      * @return void
      */
     private function updateParsingFinish($id)
     {
-        $stmt = $this->db->prepare('UPDATE parsing SET finish_time = :finish_time WHERE id = :id');
+        $stmt = $this->db->prepare('UPDATE parsing SET finish_time = :finish_time, status = :status WHERE id = :id');
+
         $stmt->bindValue(':finish_time', date('Y-m-d H:i:s'), SQLITE3_TEXT);
+        $stmt->bindValue(':status', self::STATUS_FINISH, SQLITE3_TEXT);
         $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+
         $stmt->execute();
     }
 
     /**
+     * @param int   $id
+     * @param array $fields
+     *
+     * @return void
+     */
+    private function updateParsing(int $id, array $fields)
+    {
+        $setters = [];
+        foreach($fields as $k => $v) {
+            $setters[] = "$k = :$k";
+        }
+        $setters = implode(", ", $setters);
+        $stmt = $this->db->prepare("UPDATE parsing SET {$setters} WHERE id = :id");
+
+        $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+        foreach($fields as $k => $v) {
+            $stmt->bindValue(':' . $k, $v, SQLITE3_TEXT);
+        }
+
+        $stmt->execute();
+    }
+
+    /**
+     * Log debug message
      * @param $message
      *
      * @return bool
