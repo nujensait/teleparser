@@ -11,11 +11,15 @@ require_once "TeleParser.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $parser   = new TeleParser();
+    // params
     $url      = trim($_POST['url']);
     $depth    = (int)$_POST['depth'];
+    $pattern  = trim($_POST['pattern']);
+
+    // calc
     $baseDir  = 'downloads';
-    $baseDir .= "/" . $parser->getDomainFromUrl($url);
+    $baseDir .= "/" . getDomainFromUrl($url);
+    $parser   = new TeleParser($baseDir);
 
     echo '<div class="container">';
     echo '<h3>Лог парсинга</h3>';
@@ -28,11 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Do parsing
-    $parser->downloadPage($url, $depth, $baseDir);
+    $parser->downloadPage($url, $pattern, $depth);
 
     echo "<li><p>Парсинг успешно выполнен.</p></li>\n";
     echo "<li><p>Все файлы сохранены в папку: <br /><pre>{$baseDir}</pre></p></li>\n";
-
+    echo "</ol>";
 
     // Display links to downloaded files
     echo '<h3>Скачанные файлы</h3>';

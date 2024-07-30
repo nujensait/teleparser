@@ -7,17 +7,29 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class TeleParser
 {
+    private $baseDir = 'downloads';         // directory to save htmls
+    private $parsedUrls = [];               // parsed links array
+
+    public function __construct($baseDir)
+    {
+        $this->baseDir = $baseDir;
+    }
+
     /**
      * @param $url
      * @param $depth
-     * @param $baseDir
      * @param $visited
      *
      * @return void
      */
-    public function downloadPage($url, $depth, $baseDir, $visited = [])
+    public function downloadPage($url, $pattern, $depth, $visited = [])
     {
         if ($depth < 0 || in_array($url, $visited)) {
+            return;
+        }
+
+        // already parsed?
+        if(in_array($url, $this->parsedUrls)) {
             return;
         }
 
@@ -27,9 +39,9 @@ class TeleParser
 
         $html           = $crawler->html();
         $parsedUrl      = parse_url($url);
-        $domain         = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+        $domain         = (isset($parsedUrl['scheme']) ? '://' . $parsedUrl['scheme'] : '') . (isset($parsedUrl['host']) ? $parsedUrl['host'] : '');
         $path           = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
-        $localPath      = $baseDir . $path . '.html';
+        $localPath      = $this->baseDir . $path . '.html';
 
         if (substr($localPath, -1) === '/') {
             $localPath .= 'index.html';
@@ -44,19 +56,31 @@ class TeleParser
         }
 
         // Download and replace external resources
-        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDir, $baseDir, $html);
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDir, $html);
 
         // Download html
-        //$this->downloadResources($crawler, $domain, $localDir, $baseDir);
+        //$this->downloadResources($crawler, $domain, $localDir);
 
         // Save the modified HTML
         file_put_contents($localPath, $html);
 
+        $this->parsedUrls[] = $url;
+
         // Process internal links
-        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $depth, $baseDir, &$visited) {
+        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited) {
             $link = $node->attr('href');
-            if ($link && strpos($link, $domain) === 0) {
-                $this->downloadPage($link, $depth - 1, $baseDir, $visited);
+            $this->log("[ " . $link . " ]");
+            // parse links only from the same domain
+            if ($link && (strpos($link, $domain) === 0 || substr($link, 0, 1) == '/')) {
+                // if pattern isset, filter links by pattern
+                if($pattern && strpos($link, $pattern) === false) {
+                    $this->log(" - SKIP (by pattern)\n");
+                    return;
+                }
+                $this->log( " - Dowloading ...\n");
+                $this->downloadPage($link, $pattern, $depth - 1,  $visited);
+            } else {
+                $this->log(" - SKIP (by domain)\n");
             }
         });
 
@@ -66,16 +90,32 @@ class TeleParser
     }
 
     /**
+     * @param $message
+     *
+     * @return void
+     */
+    private function log($message)
+    {
+        $logFile = fopen($this->baseDir . "/parsing.log", "a");
+        if($logFile) {
+            fwrite($logFile, $message);
+            fclose($logFile);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Download external resources and update the HTML to use local file paths.
      *
      * @param Crawler $crawler The crawler instance.
      * @param string $domain The domain of the current URL.
      * @param string $localDir The local directory to save the resources.
-     * @param string $baseDir The base directory for saving files.
      * @param string $html The HTML content to update.
      * @return string The updated HTML content.
      */
-    private function downloadAndReplaceResources(Crawler $crawler, $domain, $localDir, $baseDir, $html)
+    private function downloadAndReplaceResources(Crawler $crawler, $domain, $localDir, $html)
     {
         $resources = [];
         $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
@@ -88,7 +128,7 @@ class TeleParser
         });
 
         foreach ($resources as $resourceUrl) {
-            $localPath = $baseDir . parse_url($resourceUrl, PHP_URL_PATH);
+            $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);
             $localDir = dirname($localPath);
             if (!file_exists($localDir)) {
                 if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
@@ -110,11 +150,10 @@ class TeleParser
      * @param Crawler $crawler
      * @param         $domain
      * @param         $localDir
-     * @param         $baseDir
      *
      * @return void
      */
-    private function downloadResources(Crawler $crawler, $domain, $localDir, $baseDir)
+    private function downloadResources(Crawler $crawler, $domain, $localDir)
     {
         $resources = [];
         $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
@@ -127,7 +166,7 @@ class TeleParser
         });
 
         foreach ($resources as $resourceUrl) {
-            $localPath = $baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
+            $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
             $localDir  = dirname($localPath);
             if (!file_exists($localDir)) {
                 if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
@@ -142,14 +181,15 @@ class TeleParser
 
     /**
      * @param $html
-     * @param $baseDir
      * @param $domain
      *
      * @return mixed
      */
-    private function replaceLinks($html, $baseDir, $domain)
+    private function replaceLinks($html, $domain)
     {
         $crawler = new Crawler($html);
+        $baseDir = $this->baseDir;
+
         $crawler->filter('a')->each(function (Crawler $node) use ($baseDir, $domain) {
             $href = $node->attr('href');
             if ($href && strpos($href, $domain) === 0) {
@@ -161,23 +201,6 @@ class TeleParser
         });
 
         return $crawler->html();
-    }
-
-    /**
-     * Extracts the domain from a given URL.
-     *
-     * @param string $url The URL to extract the domain from.
-     * @return string The extracted domain.
-     */
-    public function getDomainFromUrl($url)
-    {
-        // Parse the URL and get the host component
-        $parsedUrl = parse_url($url, PHP_URL_HOST);
-
-        // Remove 'www.' prefix if present
-        $domain = preg_replace('/^www\./', '', $parsedUrl);
-
-        return $domain;
     }
 
     /**
@@ -207,3 +230,19 @@ class TeleParser
     }
 }
 
+/**
+ * Extracts the domain from a given URL.
+ *
+ * @param string $url The URL to extract the domain from.
+ * @return string The extracted domain.
+ */
+function getDomainFromUrl($url)
+{
+    // Parse the URL and get the host component
+    $parsedUrl = parse_url($url, PHP_URL_HOST);
+
+    // Remove 'www.' prefix if present
+    $domain = preg_replace('/^www\./', '', $parsedUrl);
+
+    return $domain;
+}
