@@ -23,6 +23,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             display: none;
+            z-index: 1001; /* Higher than the overlay */
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -32,10 +33,25 @@
             color: orangered;
             font-size: 20px;
         }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        .blurred {
+            filter: blur(5px);
+            pointer-events: none; /* Disable clicks */
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="overlay" id="overlay"></div>
+<div class="container" id="content">
     <h1 class="center-align">Парсер сайта</h1>
     <form id="parseForm" method="post" action="index.php">
         <div class="input-field">
@@ -62,6 +78,8 @@
 <script>
     document.getElementById('parseForm').addEventListener('submit', function() {
         document.getElementById('loader').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('content').classList.add('blurred');
     });
 </script>
 </body>
