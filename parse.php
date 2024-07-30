@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // calc
     $baseDir  = 'downloads';
-    $baseDir .= "/" . getDomainFromUrl($url);
+    $baseDir .= "/" . date("Ymd_His") . "_" . getDomainFromUrl($url);
     $parser   = new TeleParser($baseDir);
 
     echo '<div class="container">';

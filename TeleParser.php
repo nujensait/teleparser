@@ -199,7 +199,7 @@ class TeleParser
      */
     private function log($message)
     {
-        $logFile = fopen($this->baseDir . "/parsing.log", "a");
+        $logFile = fopen($this->baseDir . "/parsing_log.txt", "a");
         if($logFile) {
             fwrite($logFile, $message);
             fclose($logFile);
