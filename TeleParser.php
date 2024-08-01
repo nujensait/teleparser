@@ -1,6 +1,7 @@
 <?php
 
 require 'vendor/autoload.php';
+require_once 'HtmlToDokuWiki.php';
 
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
@@ -77,30 +78,58 @@ class TeleParser
         $parsedUrl      = parse_url($url);
         $domain         = (isset($parsedUrl['scheme']) ? '://' . $parsedUrl['scheme'] : '') . (isset($parsedUrl['host']) ? $parsedUrl['host'] : '');
         $path           = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
-        $localPath      = $this->baseDir . $path . '.html';
+        $localPathHtml  = $this->baseDir . '/html' . $path . '.html';
+        $localPathWiki  = $this->baseDir . '/dokuwiki' . $path . '.txt';
 
-        if (substr($localPath, -1) === '/') {
-            $localPath .= 'index.html';
+        // create dirs for HTML
+        if (substr($localPathHtml, -1) === '/') {
+            $localPathHtml .= 'index.html';
         }
 
-        $localDir = dirname($localPath);
+        $localDirHtml = dirname($localPathHtml);
 
-        if (!file_exists($localDir)) {
-            if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
+        if (!file_exists($localDirHtml)) {
+            if (!mkdir($localDirHtml, 0777, true) && !is_dir($localDirHtml)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirHtml));
+            }
+        }
+
+        // Same for wiki
+        if (substr($localPathWiki, -1) === '/') {
+            $localPathWiki .= 'index.txt';
+        }
+
+        $localDirWiki = dirname($localPathWiki);
+
+        if (!file_exists($localDirWiki)) {
+            if (!mkdir($localDirWiki, 0777, true) && !is_dir($localDirWiki)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirWiki));
             }
         }
 
         // Download and replace external resources
-        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDir, $html);
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html);
 
-        // Download html
+        // Generate DokuWiki page
+        $converter = new HtmlToDokuWiki();
+        $wiki = $converter->convert($html);
+
+            // Download html
         //$this->downloadResources($crawler, $domain, $localDir);
 
         // Save the modified HTML
-        file_put_contents($localPath, $html);
+        $resSave = file_put_contents($localPathHtml, $html);
+        if($resSave === false) {
+            throw new \RuntimeException(sprintf('Cannot save file: "%s"', $localPathHtml));
+        }
 
-        $this->updateParsing($parsingId, ['file' => $localPath]);
+        // Also save dokuwiki file
+        $resSave = file_put_contents($localPathWiki, $wiki);
+        if($resSave === false) {
+            throw new \RuntimeException(sprintf('Cannot save file: "%s"', $localPathWiki));
+        }
+
+        $this->updateParsing($parsingId, ['file' => $localPathHtml]);
 
         $this->parsedUrls[] = $url;
 
