@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Test HtmlToDokuWiki class
+ * Usage:
+ * phpunit tests/HtmlToDokuWikiTest.php
+ */
+
 require_once __DIR__ . '/../src/HtmlToDokuWiki.php';
 
 use PHPUnit\Framework\TestCase;
@@ -69,5 +75,20 @@ class HtmlToDokuWikiTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Element with id='dokuwiki__content' not found.");
         $this->converter->convert($html);
+    }
+
+    /**
+     * @return void
+     */
+    public function testFullHtmlConversion()
+    {
+        $converter  = new HtmlToDokuWiki();
+        $html       = file_get_contents(__DIR__ . '/testHtml.html');
+        $expected   = file_get_contents(__DIR__ . '/testWiki.txt');
+
+        $dokuWikiText = $converter->convert($html);
+        file_put_contents(__DIR__ . "/factWiki.txt", $dokuWikiText);
+
+        $this->assertEquals($expected, $dokuWikiText);
     }
 }

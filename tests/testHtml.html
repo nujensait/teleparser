@@ -1,0 +1,4184 @@
+<head>
+    <meta charset="utf-8">
+    <title>Руководство по Zabbix</title>
+	<!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KRBT62P');</script>
+    <!-- End Google Tag Manager -->
+	
+	<link rel="canonical" href="/documentation/current/ru/manual">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="alternate" hreflang="en" href="/documentation/5.0/en/manual">
+	<link rel="alternate" hreflang="pt" href="/documentation/5.0/pt/manual">
+	 
+	<link rel="alternate" hreflang="zh" href="/documentation/5.0/zh/manual">
+	<link rel="alternate" hreflang="fr" href="/documentation/5.0/fr/manual">
+	<link rel="alternate" hreflang="tr" href="/documentation/5.0/tr/manual">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/documentation/5.0/screen.min.css?162c4455b644de3c">
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/documentation/5.0/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/documentation/5.0/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/documentation/5.0/images/favicon-16x16.png">
+	<link rel="manifest" href="/documentation/5.0/images/site.webmanifest">
+	<link rel="mask-icon" href="/documentation/5.0/images/safari-pinned-tab.svg" color="#d30200">
+	<link rel="shortcut icon" href="/documentation/5.0/images/favicon.ico">
+	<meta name="msapplication-TileColor" content="#d30200">
+	<meta name="msapplication-config" content="/documentation/5.0/images/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+    </head>
+<body>
+	<!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRBT62P" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="dokuwiki__site">
+		<div id="dokuwiki__top" class="showSidebar hasSidebar">
+			<div class="page-header">
+				<div class="group-1">
+					<div class="logo">
+						<a href="https://www.zabbix.com/manuals" title="Zabbix">
+							<img src="/documentation/5.0/images/logo.svg" alt>
+						</a>
+					</div>
+					<h1 class="doku_title">Documentation</h1>
+				</div>
+				<div class="group-2">
+					<div class="dropdown versions">
+     	<span class="selected"></span>
+
+     	<ul class="dropdown-options">
+     				<li class="version-section"><span>Supported</span></li>
+     				<li>
+     						<a href="/documentation/current/ru/manual" data-version="7.0">7.0 <span class="description">(current)</span></a>
+     					</li>
+     				<li>
+     						<a href="/documentation/6.4/ru/manual" data-version="6.4">6.4 </a>
+     					</li>
+     				<li>
+     						<a href="/documentation/6.0/ru/manual" data-version="6.0">6.0 </a>
+     					</li>
+     				<li class="selected">
+     						<a href="/documentation/5.0/ru/manual" data-version="5.0">5.0 </a>
+     					</li>
+     				
+     				<li class="version-section"><span>In development</span></li>
+     				<li>
+     						<a href="/documentation/devel/ru/manual" data-version="7.2">7.2 <span class="description">(devel)</span></a>
+     					</li>
+     				
+     				<li class="version-section"><span>Unsupported</span></li>
+     				<li>
+     			<a href="/documentation/6.2/ru/manual" data-version="6.2">6.2</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/5.4/ru/manual" data-version="5.4">5.4</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/5.2/ru/manual" data-version="5.2">5.2</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/4.4/ru/manual" data-version="4.4">4.4</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/4.2/ru/manual" data-version="4.2">4.2</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/4.0/ru/manual" data-version="4.0">4.0</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/3.4/ru/manual" data-version="3.4">3.4</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/3.2/ru/manual" data-version="3.2">3.2</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/3.0/ru/manual" data-version="3.0">3.0</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/2.4/ru/manual" data-version="2.4">2.4</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/2.2/ru/manual" data-version="2.2">2.2</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/2.0/ru/manual" data-version="2.0">2.0</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/1.8/ru/manual" data-version="1.8">1.8</a>
+     		</li>
+     				
+     				<li class="version-section"><span>General</span></li>
+     				<li>
+     			<a href="/documentation/info/en" data-version="info">info</a>
+     		</li>
+     				<li>
+     			<a href="/documentation/guidelines/en" data-version="guidelines">guidelines</a>
+     		</li>
+     				
+     	</ul>
+     </div>					<div class="dropdown translation">
+           	<span class="selected"></span>
+
+           	<ul class="dropdown-options">
+           						<li>
+           			<a href="/documentation/5.0/en/manual" data-lang="en">English</a>
+           		</li>
+           								<li>
+           			<a href="/documentation/5.0/pt/manual" data-lang="pt-BR">Português</a>
+           		</li>
+           								<li class="selected">
+           			<a href="/documentation/5.0/ru/manual" data-lang="ru">Русский</a>
+           		</li>
+           								<li>
+           			<a href="/documentation/5.0/zh/manual" data-lang="zh-CN">中文</a>
+           		</li>
+           								<li>
+           			<a href="/documentation/5.0/fr/manual" data-lang="fr">Français</a>
+           		</li>
+           								<li>
+           			<a href="/documentation/5.0/tr/manual" data-lang="tr">Türkçe</a>
+           		</li>
+           					</ul>
+           </div>									</div>
+				<div class="group-3">
+        <div id="autocomplete" data-base-url="/documentation/5.0/ru/search?refinementList[language][0]=ru&amp;ref_page=manual&amp;query="></div>
+    </div>			</div>
+			<div class="group-2 top-banner">Это перевод страницы документации с английского языка. Помогите нам <a href="https://www.zabbix.com/documentation/guidelines/en/translator_guidelines" target="_blank">сделать его лучше</a>.</div>
+			<div class="wrapper group">
+				<div id="dokuwiki__aside">
+					<div class="pad include group">
+						<div class="content">
+							<div class="dtree"><div class="dTreeNode  expandable">
+	<span class="expand-collapse"></span>
+	<a href="/documentation/5.0/ru/manual" class="nodeFdUrl">Руководство по Zabbix</a>
+</div>
+<div class="clip ">
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/appendix" class="nodeFdUrl">Приложения</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/faq" class="nodeFdUrl">1 Часто задаваемые вопросы / Решение проблем</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/install" class="nodeFdUrl">2 Установка</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/db_scripts" class="nodeFdUrl">1 Создание базы данных</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/db_charset_coll" class="nodeFdUrl">2 Восстановление набора символов и сопоставления базы данных Zabbix</a>
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/db_encrypt" class="nodeFdUrl">3 Безопасные соединения с базой данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/appendix/install/db_encrypt/mysql" class="nodeFdUrl">1 MySQL encryption configuration</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/appendix/install/db_encrypt/postgres" class="nodeFdUrl">2 PostgreSQL encryption configuration</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/timescaledb" class="nodeFdUrl">4 Настройка TimescaleDB setup</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/elastic_search_setup" class="nodeFdUrl">5 Установка Elasticsearch</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/real_time_export" class="nodeFdUrl">6 Экспорт событий, значений и динамики изменений в режиме реального времени</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/nginx" class="nodeFdUrl">7 Примечания по настройке Nginx для Zabbix на SLES дистрибутивах</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/run_agent_as_root" class="nodeFdUrl">8 Запуск агента из под root</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/windows_agent" class="nodeFdUrl">9 Zabbix агент на Microsoft Windows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/okta" class="nodeFdUrl">10 Настройка SAML с Okta</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/install/locales" class="nodeFdUrl">11 Additional frontend languages</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/config" class="nodeFdUrl">3 Конфигурация демонов</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_server" class="nodeFdUrl">1 Zabbix сервер</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_proxy" class="nodeFdUrl">2 Zabbix прокси</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_agentd" class="nodeFdUrl">3 Zabbix агент (UNIX)</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_agent2" class="nodeFdUrl">4 Zabbix агент 2 (UNIX)</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_agentd_win" class="nodeFdUrl">5 Zabbix агент (Windows)</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_agent2_win" class="nodeFdUrl">6 Zabbix агент 2 (Windows)</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/zabbix_java" class="nodeFdUrl">7 Zabbix Java gateway</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/config/special_notes_include" class="nodeFdUrl">8 Специальные заметки о параметре "Include"</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/protocols" class="nodeFdUrl">4 Протоколы</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/server_proxy" class="nodeFdUrl">1 Протокол обмена данными сервер-прокси</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/zabbix_agent" class="nodeFdUrl">2 Протокол Zabbix агента</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/zabbix_agent2" class="nodeFdUrl">3 Zabbix agent 2 protocol</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/zabbix_sender" class="nodeFdUrl">3 Протокол Zabbix sender</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/zabbix_agent2_plugin" class="nodeFdUrl">4 Zabbix agent 2 plugin protocol</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/header_datalen" class="nodeFdUrl">4 Длина заголовка и данных</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/protocols/real_time_export" class="nodeFdUrl">5 Протокол экспорта в режиме реального времени</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/items" class="nodeFdUrl">5 Элементы данных</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/supported_by_platform" class="nodeFdUrl">1 Поддерживаемые элементы данных по платформам</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/vm.memory.size_params" class="nodeFdUrl">2 Параметры vm.memory.size</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/activepassive" class="nodeFdUrl">3 Пассивные и активные проверки агента</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/trapper" class="nodeFdUrl">4 Траппер элементы данных</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/win_permissions" class="nodeFdUrl">5 Минимальный уровень прав для элементов данных Windows агента</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/encoding_of_values" class="nodeFdUrl">6 Кодировка получаемых значений</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/large_file_support" class="nodeFdUrl">7 Поддержка больших файлов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/sensor" class="nodeFdUrl">8 Сенсор</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/proc_mem_notes" class="nodeFdUrl">9 Заметки о параметре типпамяти в элементах данных proc.mem</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/proc_mem_num_notes" class="nodeFdUrl">10 Заметки по выбору процессов в элементах данных proc.mem и proc.num</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/service_check_details" class="nodeFdUrl">11 Детали реализации net.tcp.service и net.udp.service проверок</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/unreachability" class="nodeFdUrl">12 Настройки недостижимости/недоступности хостов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/remote_stats" class="nodeFdUrl">13 Удаленный мониторинг статистики Zabbix</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/items/kerberos" class="nodeFdUrl">14 Настройка Kerberos с Zabbix</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/triggers" class="nodeFdUrl">6 Триггеры</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/triggers/functions" class="nodeFdUrl">1 Поддерживаемые функции триггеров</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/macros" class="nodeFdUrl">7 Макросы</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/macros/supported_by_location" class="nodeFdUrl">1 Макросы поддерживаемые по назначению</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/appendix/macros/supported_by_location_user" class="nodeFdUrl">2 Пользовательские макросы поддерживаемые по назначению</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/suffixes" class="nodeFdUrl">8 Символы единиц измерения</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/time_period" class="nodeFdUrl">9 Настройка периодов времени</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/command_execution" class="nodeFdUrl">10 Выполнение команд</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/compatibility" class="nodeFdUrl">13 Совместимость версий</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/python" class="nodeFdUrl">14 Python library for Zabbix API</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/database_error_handling" class="nodeFdUrl">14 Обработка ошибок базы данных</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/zabbix_sender_dll" class="nodeFdUrl">15 Динамическая библиотека Zabbix для Windows</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/selinux" class="nodeFdUrl">16 Проблемы с SELinux</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/other_issues" class="nodeFdUrl">17 Остальные проблемы</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/appendix/agent_comparison" class="nodeFdUrl">18 Отличия между Zabbix агентом и Zabbix агентом 2</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/introduction" class="nodeFdUrl">1. Введение</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/manual_structure" class="nodeFdUrl">1 Структура руководства</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/about" class="nodeFdUrl">2 Что такое Zabbix</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/features" class="nodeFdUrl">3 Возможности Zabbix</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/overview" class="nodeFdUrl">4 Обзор Zabbix</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew500" class="nodeFdUrl">5 Что нового в Zabbix 5.0.0</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew501" class="nodeFdUrl">6 Что нового в Zabbix 5.0.1</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew502" class="nodeFdUrl">7 Что нового в Zabbix 5.0.2</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew503" class="nodeFdUrl">8 Что нового в Zabbix 5.0.3</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew504" class="nodeFdUrl">9 Что нового в Zabbix 5.0.4</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew505" class="nodeFdUrl">10 What's new in Zabbix 5.0.5</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew506" class="nodeFdUrl">11 What's new in Zabbix 5.0.6</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew507" class="nodeFdUrl">12 What's new in Zabbix 5.0.7</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew508" class="nodeFdUrl">13 What's new in Zabbix 5.0.8</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew509" class="nodeFdUrl">14 What's new in Zabbix 5.0.9</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5010" class="nodeFdUrl">15 What's new in Zabbix 5.0.10</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5011" class="nodeFdUrl">15 What's new in Zabbix 5.0.11</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5012" class="nodeFdUrl">16 What's new in Zabbix 5.0.12</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5013" class="nodeFdUrl">17 What's new in Zabbix 5.0.13</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5014" class="nodeFdUrl">18 What's new in Zabbix 5.0.14</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5015" class="nodeFdUrl">19 What's new in Zabbix 5.0.15</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5016" class="nodeFdUrl">20 What's new in Zabbix 5.0.16</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5017" class="nodeFdUrl">21 What's new in Zabbix 5.0.17</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5018" class="nodeFdUrl">22 What's new in Zabbix 5.0.18</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5019" class="nodeFdUrl">23 What's new in Zabbix 5.0.19</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5020" class="nodeFdUrl">24 What's new in Zabbix 5.0.20</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5021" class="nodeFdUrl">25 What's new in Zabbix 5.0.21</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5022" class="nodeFdUrl">26 What's new in Zabbix 5.0.22</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5023" class="nodeFdUrl">27 What's new in Zabbix 5.0.23</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5024" class="nodeFdUrl">28 What's new in Zabbix 5.0.24</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5025" class="nodeFdUrl">29 What's new in Zabbix 5.0.25</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5026" class="nodeFdUrl">30 What's new in Zabbix 5.0.26</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5027" class="nodeFdUrl">31 What's new in Zabbix 5.0.27</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5028" class="nodeFdUrl">32 What's new in Zabbix 5.0.28</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5029" class="nodeFdUrl">33 What's new in Zabbix 5.0.29</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5030" class="nodeFdUrl">34 What's new in Zabbix 5.0.30</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5031" class="nodeFdUrl">35 What's new in Zabbix 5.0.31</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5032" class="nodeFdUrl">36 What's new in Zabbix 5.0.32</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5033" class="nodeFdUrl">37 What's new in Zabbix 5.0.33</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5034" class="nodeFdUrl">38 What's new in Zabbix 5.0.34</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5035" class="nodeFdUrl">39 What's new in Zabbix 5.0.35</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5036" class="nodeFdUrl">40 What's new in Zabbix 5.0.36</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5037" class="nodeFdUrl">41 What's new in Zabbix 5.0.37</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5038" class="nodeFdUrl">42 What's new in Zabbix 5.0.38</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5039" class="nodeFdUrl">43 What's new in Zabbix 5.0.39</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5040" class="nodeFdUrl">44 What's new in Zabbix 5.0.40</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5041" class="nodeFdUrl">45 What's new in Zabbix 5.0.41</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5042" class="nodeFdUrl">46 What's new in Zabbix 5.0.42</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/introduction/whatsnew5043" class="nodeFdUrl">47 What's new in Zabbix 5.0.43</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/definitions" class="nodeFdUrl">2. Определения</a>
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/concepts" class="nodeFdUrl">3. Процессы Zabbix</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/server" class="nodeFdUrl">1 Сервер</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/agent" class="nodeFdUrl">2 Агент</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/agent2" class="nodeFdUrl">3 Агент 2</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/proxy" class="nodeFdUrl">3 Прокси</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/java" class="nodeFdUrl">4 Java gateway</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/concepts/java/from_sources" class="nodeFdUrl">1 Setup from sources</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/concepts/java/from_rhel_centos" class="nodeFdUrl">2 Setup from RHEL/CentOS packages</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/concepts/java/from_debian_ubuntu" class="nodeFdUrl">3 Setup from Debian/Ubuntu packages</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/sender" class="nodeFdUrl">5 Sender</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/get" class="nodeFdUrl">6 Get</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/concepts/js" class="nodeFdUrl">8 JS</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/installation" class="nodeFdUrl">4. Установка</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/getting_zabbix" class="nodeFdUrl">1 Получение Zabbix</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/requirements" class="nodeFdUrl">2 Требования</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/requirements/best_practices" class="nodeFdUrl">Наилучшие практики для безопасной установки Zabbix</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/install" class="nodeFdUrl">3 Установка из исходных кодов</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install/building_zabbix_agent_2_on_windows" class="nodeFdUrl">Сборка Zabbix агент 2 на Windows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install/mac_agent" class="nodeFdUrl">Сборка Zabbix агента на macOS</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install/win_agent" class="nodeFdUrl">Сборка Zabbix агента на Windows</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/install_from_packages" class="nodeFdUrl">4 Установка из пакетов</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install_from_packages/rhel_centos" class="nodeFdUrl">1 Red Hat Enterprise Linux/CentOS</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install_from_packages/debian_ubuntu" class="nodeFdUrl">2 Debian/Ubuntu</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install_from_packages/suse" class="nodeFdUrl">3 SUSE Linux Enterprise Server</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install_from_packages/win_msi" class="nodeFdUrl">4 Windows agent installation from MSI</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/install_from_packages/mac_pkg" class="nodeFdUrl">5 Установка Mac OS агента с PKG</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/containers" class="nodeFdUrl">5 Установка из контейнеров</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/containers/openshift" class="nodeFdUrl">Installation with OpenShift</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/frontend" class="nodeFdUrl">6 Web interface installation</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/frontend/frontend_on_rhel7" class="nodeFdUrl">1 RHEL/CentOS 7 frontend installation</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/installation/frontend/frontend_on_rhel7/php73" class="nodeFdUrl">Updating to PHP 7.3 packages</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/frontend/frontend_on_debian" class="nodeFdUrl">2 Debian/Ubuntu frontend installation</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade" class="nodeFdUrl">6 Процедура обновления</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/upgrade/packages" class="nodeFdUrl">Обновление с использованием пакетов</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/installation/upgrade/packages/rhel_centos" class="nodeFdUrl">1 Red Hat Enterprise Linux/CentOS</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/installation/upgrade/packages/debian_ubuntu" class="nodeFdUrl">2 Debian/Ubuntu</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/upgrade/sources" class="nodeFdUrl">Обновление из исходных кодов</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/known_issues" class="nodeFdUrl">7 Известные проблемы</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/installation/known_issues/compilation_issues" class="nodeFdUrl">1 Compilation issues</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/template_changes" class="nodeFdUrl">8 Изменения в шаблонах</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_500" class="nodeFdUrl">9 Заметки по обновлению для 5.0.0</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_501" class="nodeFdUrl">10 Заметки по обновлению для 5.0.1</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_502" class="nodeFdUrl">11 Заметки по обновлению для 5.0.2</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_503" class="nodeFdUrl">12 Заметки по обновлению для 5.0.3</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_504" class="nodeFdUrl">14 Upgrade notes for 5.0.4</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_505" class="nodeFdUrl">15 Upgrade notes for 5.0.5</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_506" class="nodeFdUrl">16 Upgrade notes for 5.0.6</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_507" class="nodeFdUrl">17 Upgrade notes for 5.0.7</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_508" class="nodeFdUrl">18 Upgrade notes for 5.0.8</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_509" class="nodeFdUrl">19 Upgrade notes for 5.0.9</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5010" class="nodeFdUrl">20 Upgrade notes for 5.0.10</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5011" class="nodeFdUrl">21 Upgrade notes for 5.0.11</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5012" class="nodeFdUrl">22 Upgrade notes for 5.0.12</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5013" class="nodeFdUrl">23 Upgrade notes for 5.0.13</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5014" class="nodeFdUrl">24 Upgrade notes for 5.0.14</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5015" class="nodeFdUrl">25 Upgrade notes for 5.0.15</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5016" class="nodeFdUrl">26 Upgrade notes for 5.0.16</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5017" class="nodeFdUrl">27 Upgrade notes for 5.0.17</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5018" class="nodeFdUrl">28 Upgrade notes for 5.0.18</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5019" class="nodeFdUrl">29 Upgrade notes for 5.0.19</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5020" class="nodeFdUrl">30 Upgrade notes for 5.0.20</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5021" class="nodeFdUrl">31 Upgrade notes for 5.0.21</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5022" class="nodeFdUrl">32 Upgrade notes for 5.0.22</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5023" class="nodeFdUrl">33 Upgrade notes for 5.0.23</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5024" class="nodeFdUrl">34 Upgrade notes for 5.0.24</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5025" class="nodeFdUrl">35 Upgrade notes for 5.0.25</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5026" class="nodeFdUrl">36 Upgrade notes for 5.0.26</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5027" class="nodeFdUrl">37 Upgrade notes for 5.0.27</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5028" class="nodeFdUrl">38 Upgrade notes for 5.0.28</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5029" class="nodeFdUrl">39 Upgrade notes for 5.0.29</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5030" class="nodeFdUrl">40 Upgrade notes for 5.0.30</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5031" class="nodeFdUrl">41 Upgrade notes for 5.0.31</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5032" class="nodeFdUrl">42 Upgrade notes for 5.0.32</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5033" class="nodeFdUrl">43 Upgrade notes for 5.0.33</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5034" class="nodeFdUrl">44 Upgrade notes for 5.0.34</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5035" class="nodeFdUrl">45 Upgrade notes for 5.0.35</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5036" class="nodeFdUrl">46 Upgrade notes for 5.0.36</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5037" class="nodeFdUrl">47 Upgrade notes for 5.0.37</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5038" class="nodeFdUrl">48 Upgrade notes for 5.0.38</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5039" class="nodeFdUrl">49 Upgrade notes for 5.0.39</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5040" class="nodeFdUrl">50 Upgrade notes for 5.0.40</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5041" class="nodeFdUrl">51 Upgrade notes for 5.0.41</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/installation/upgrade_notes_5042" class="nodeFdUrl">52 Upgrade notes for 5.0.42</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/quickstart" class="nodeFdUrl">5. Быстрый старт</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/login" class="nodeFdUrl">1 Вход и настройка пользователя</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/host" class="nodeFdUrl">2 Новый узел сети</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/item" class="nodeFdUrl">3 Новый элемент данных</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/trigger" class="nodeFdUrl">4 Новый триггер</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/notification" class="nodeFdUrl">5 Получение оповещения о проблеме</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/quickstart/template" class="nodeFdUrl">6 Новый шаблон</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/appliance" class="nodeFdUrl">6. Готовое решение Zabbix</a>
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/config" class="nodeFdUrl">7. Настройка</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/hosts" class="nodeFdUrl">1 Узлы сети и группы узлов сети</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/hosts/host" class="nodeFdUrl">1 Настройка узла сети</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/hosts/inventory" class="nodeFdUrl">2 Инвентарные данные</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/hosts/hostupdate" class="nodeFdUrl">3 Массовое обновление</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/items" class="nodeFdUrl">2 Элементы данных</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/item" class="nodeFdUrl">1 Создание элемента данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/item/key" class="nodeFdUrl">1 Формат ключа элемента данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/item/custom_intervals" class="nodeFdUrl">2 Пользовательские интервалы</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/preprocessing" class="nodeFdUrl">2 Предобработка значений элементов данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/examples" class="nodeFdUrl">1 Примеры использования</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/preprocessing_details" class="nodeFdUrl">2 Детали предобработки значений элементов данных</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/javascript" class="nodeFdUrl">3 Javascript предобработка</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/javascript/javascript_objects" class="nodeFdUrl">Дополнительные Javascript объекты</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/jsonpath_functionality" class="nodeFdUrl">4 Поддержка JSONPath функционала</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/jsonpath_functionality/escaping_lld_macros" class="nodeFdUrl">Экранирование спецсимволов из значений LLD макросов в JSONPath</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/preprocessing/csv_to_json" class="nodeFdUrl">5 Предобработка CSV в JSON</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/itemtypes" class="nodeFdUrl">3 Типы элементов данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/zabbix_agent" class="nodeFdUrl">1 Zabbix агент</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/zabbix_agent/zabbix_agent2" class="nodeFdUrl">Zabbix агент 2</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/zabbix_agent/win_keys" class="nodeFdUrl">Специфичные ключи элементов данных для Windows</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/snmp" class="nodeFdUrl">2 SNMP агент</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/snmp/dynamicindex" class="nodeFdUrl">1 Динамические индексы</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/snmp/special_mibs" class="nodeFdUrl">2 Специальные OID'ы</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/snmp/mibs" class="nodeFdUrl">3 MIB файлы</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/snmptrap" class="nodeFdUrl">3 SNMP трапы</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/ipmi" class="nodeFdUrl">4 Проверки IPMI</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/simple_checks" class="nodeFdUrl">5 Простые проверки</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/simple_checks/vmware_keys" class="nodeFdUrl">1 Ключи элементов данных для мониторинга VMware</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/log_items" class="nodeFdUrl">6 Мониторинг файлов журналов</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/calculated" class="nodeFdUrl">7 Вычисляемые элементы данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/internal" class="nodeFdUrl">8 Внутренние проверки</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/ssh_checks" class="nodeFdUrl">9 Проверки через SSH</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/telnet_checks" class="nodeFdUrl">10 Проверки через Telnet</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/external" class="nodeFdUrl">11 Внешние проверки</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/aggregate" class="nodeFdUrl">12 Агрегированные проверки</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/trapper" class="nodeFdUrl">13 Траппер элементы данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/jmx_monitoring" class="nodeFdUrl">14 JMX мониторинг</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/odbc_checks" class="nodeFdUrl">15 ODBC мониторинг</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/odbc_checks/unixodbc_mysql" class="nodeFdUrl">1 Рекомендуемые настройки UnixODBC для MySQL</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/odbc_checks/unixodbc_postgresql" class="nodeFdUrl">2 Рекомендуемые настройки UnixODBC для PostgreSQL</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/odbc_checks/unixodbc_oracle" class="nodeFdUrl">3 Рекомендуемые настройки UnixODBC для Oracle</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/odbc_checks/unixodbc_mssql" class="nodeFdUrl">4 Рекомендуемые настройки UnixODBC для MSSQL</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/dependent_items" class="nodeFdUrl">16 Зависимые элементы данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/http" class="nodeFdUrl">17 HTTP агент</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/itemtypes/prometheus" class="nodeFdUrl">18 Проверки Prometheus</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/history_and_trends" class="nodeFdUrl">4 История и динамика изменений</a>
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/userparameters" class="nodeFdUrl">5 Пользовательские параметры</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/items/userparameters/extending_agent" class="nodeFdUrl">1 Расширение Zabbix агентов</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/loadablemodules" class="nodeFdUrl">6 Подгружаемые модули</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/perfcounters" class="nodeFdUrl">7 Счетчики производительности Windows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/itemupdate" class="nodeFdUrl">8 Массовое обновление</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/mapping" class="nodeFdUrl">9 Преобразование значений</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/applications" class="nodeFdUrl">10 Группы элементов данных</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/queue" class="nodeFdUrl">11 Очередь</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/value_cache" class="nodeFdUrl">12 Кэш значений</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/check_now" class="nodeFdUrl">13 Выполнить сейчас</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/plugins" class="nodeFdUrl">14 Плагины</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/items/restrict_checks" class="nodeFdUrl">15 Ограничение проверок агента</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/triggers" class="nodeFdUrl">3 Триггеры</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/trigger" class="nodeFdUrl">1 Настройка триггера</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/expression" class="nodeFdUrl">2 Выражение триггера</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/dependencies" class="nodeFdUrl">3 Зависимости триггеров</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/severity" class="nodeFdUrl">4 Важность триггеров</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/customseverities" class="nodeFdUrl">5 Пользовательские важности триггеров</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/update" class="nodeFdUrl">6 Массовое обновление</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/triggers/prediction" class="nodeFdUrl">7 Прогнозирующие функции триггеров</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/events" class="nodeFdUrl">4 События</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/events/trigger_events" class="nodeFdUrl">1 Генерация событий на триггеры</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/events/sources" class="nodeFdUrl">2 Другие источники событий</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/events/manual_close" class="nodeFdUrl">3 Закрытие проблем вручную</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/event_correlation" class="nodeFdUrl">5 Корреляция событий</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/event_correlation/trigger" class="nodeFdUrl">1 Корреляция событий на основе триггеров</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/event_correlation/trigger/event_tags" class="nodeFdUrl">Теги события</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/event_correlation/global" class="nodeFdUrl">2 Глобальная корреляция событий</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/visualization" class="nodeFdUrl">6 Visualization</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/graphs" class="nodeFdUrl">1 Graphs</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/graphs/simple" class="nodeFdUrl">1 Simple graphs</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/graphs/custom" class="nodeFdUrl">2 Custom graphs</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/graphs/adhoc" class="nodeFdUrl">3 Ad-hoc graphs</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/graphs/aggregate" class="nodeFdUrl">4 Aggregation in graphs</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/maps" class="nodeFdUrl">2 Network maps</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/maps/map" class="nodeFdUrl">1 Configuring a network map</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/maps/host_groups" class="nodeFdUrl">2 Host group elements</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/maps/links" class="nodeFdUrl">3 Link indicators</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/screens" class="nodeFdUrl">3 Screens</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/visualization/screens/elements" class="nodeFdUrl">1 Screen elements</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/slides" class="nodeFdUrl">4 Slide shows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/host_screens" class="nodeFdUrl">5 Host screens</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/visualization/dashboard" class="nodeFdUrl">6 Dashboard</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/templates" class="nodeFdUrl">7 Шаблоны</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates/template" class="nodeFdUrl">1 Настройка шаблона</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates/linking" class="nodeFdUrl">2 Присоединение/отсоединение</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates/nesting" class="nodeFdUrl">3 Наследование</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates/mass" class="nodeFdUrl">4 Массовое обновление</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box" class="nodeFdUrl">8 Готовые шаблоны</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/network_devices" class="nodeFdUrl">1 Стандартизованные шаблоны для сетевых устройств</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/jmx" class="nodeFdUrl">JMX template operation</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/http" class="nodeFdUrl">Настройка шаблонов HTTP</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/ipmi" class="nodeFdUrl">Настройка шаблонов IPMI</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/odbc_checks" class="nodeFdUrl">Настройка шаблонов ODBC</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/zabbix_agent2" class="nodeFdUrl">Настройка шаблонов Zabbix агента 2</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/templates_out_of_the_box/zabbix_agent" class="nodeFdUrl">Настройка шаблонов для Zabbix агента</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/notifications" class="nodeFdUrl">9 Оповещения о событиях</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/notifications/media" class="nodeFdUrl">1 Способы оповещений</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/media/email" class="nodeFdUrl">1 E-mail</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/media/sms" class="nodeFdUrl">2 SMS</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/media/script" class="nodeFdUrl">3 Пользовательские скрипты оповещений</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/media/webhook" class="nodeFdUrl">4 Вебхук</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/notifications/media/webhook/webhook_examples" class="nodeFdUrl">Webhook script examples</a>
+     </div>
+
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/notifications/action" class="nodeFdUrl">2 Действия</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/action/conditions" class="nodeFdUrl">1 Условия</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/action/operation" class="nodeFdUrl">2 Операции</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/notifications/action/operation/message" class="nodeFdUrl">1 Отправка сообщений</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/notifications/action/operation/remote_command" class="nodeFdUrl">2 Удаленные команды</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/notifications/action/operation/other" class="nodeFdUrl">3 Дополнительные операции</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/config/notifications/action/operation/macros" class="nodeFdUrl">4 Использование макросов в сообщениях</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/action/recovery_operations" class="nodeFdUrl">3 Операции восстановления</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/action/acknowledgment_operations" class="nodeFdUrl">4 Update operations</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/config/notifications/action/escalations" class="nodeFdUrl">5 Эскалации</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/notifications/unsupported_item" class="nodeFdUrl">3 Получение оповещений о неподдерживаемых элементах данных</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/macros" class="nodeFdUrl">10 Макросы</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/macros/macro_functions" class="nodeFdUrl">1 Функции макросов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/macros/user_macros" class="nodeFdUrl">2 User macros</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/macros/user_macros_context" class="nodeFdUrl">3 Пользовательские макросы с контекстом</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/macros/lld_macros" class="nodeFdUrl">4 Макросы низкоуровневых обнаружений</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/config/users_and_usergroups" class="nodeFdUrl">11 Пользователи и группы пользователей</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/users_and_usergroups/user" class="nodeFdUrl">1 Настройка пользователя</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/users_and_usergroups/permissions" class="nodeFdUrl">2 Права доступа</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/config/users_and_usergroups/usergroup" class="nodeFdUrl">3 Группы пользователей</a>
+   </div>
+
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/it_services" class="nodeFdUrl">8. Мониторинг услуг</a>
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/web_monitoring" class="nodeFdUrl">9. Веб-мониторинг</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_monitoring/items" class="nodeFdUrl">1 Элементы данных веб-мониторинга</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_monitoring/example" class="nodeFdUrl">2 Сценарий из реальной жизни</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/vm_monitoring" class="nodeFdUrl">10. Мониторинг виртуальных машин</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/vm_monitoring/discovery_fields" class="nodeFdUrl">1 Поля ключей обнаружения виртуальных машин</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/maintenance" class="nodeFdUrl">11. Обслуживание</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/regular_expressions" class="nodeFdUrl">12. Регулярные выражения</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/acknowledges" class="nodeFdUrl">13. Подтверждение проблем</a>
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/xml_export_import" class="nodeFdUrl">13. Экспорт/импорт настроек</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/groups" class="nodeFdUrl">1 Группы узлов сети</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/templates" class="nodeFdUrl">2 Шаблоны</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/hosts" class="nodeFdUrl">3 Узлы сети</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/maps" class="nodeFdUrl">4 Карты сети</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/screens" class="nodeFdUrl">5 Комплексные экраны</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/xml_export_import/media" class="nodeFdUrl">6 Media types</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/discovery" class="nodeFdUrl">15. Обнаружение</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/discovery/network_discovery" class="nodeFdUrl">1 Обнаружение сети</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/network_discovery/rule" class="nodeFdUrl">1 Настройка правила сетевого обнаружения</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/discovery/auto_registration" class="nodeFdUrl">2 Авторегистрация активных агентов</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery" class="nodeFdUrl">3 Низкоуровневое обнаружение</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/mounted_filesystems" class="nodeFdUrl">1 Обнаружение смонтированных файловых систем</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/network_interfaces" class="nodeFdUrl">2 Обнаружение сетевых интерфейсов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/cpu" class="nodeFdUrl">3 Обнаружение CPU и ядер CPU</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/snmp_oids" class="nodeFdUrl">4 Обнаружение SNMP OID'ов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/jmx" class="nodeFdUrl">5 Обнаружение JMX объектов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/ipmi_sensors" class="nodeFdUrl">6 Обнаружение сенсоров IPMI</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/systemd" class="nodeFdUrl">7 Обнаружение systemd сервисов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/windows_services" class="nodeFdUrl">8 Обнаружение служб Windows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/windows_perf_instances" class="nodeFdUrl">9 Обнаружение объектов счетчиков производительности Windows</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/wmi" class="nodeFdUrl">10 Обнаружение с использованием WMI запросов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/sql_queries" class="nodeFdUrl">11 Обнаружение с использованием ODBC SQL запросов</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/prometheus" class="nodeFdUrl">12 Обнаружение с использованием данных Prometheus</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/devices" class="nodeFdUrl">13 Обнаружение блочных устройств</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/host_interfaces" class="nodeFdUrl">14 Обнаружение интерфейсов узлов сети в Zabbix</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/discovery/low_level_discovery/notes" class="nodeFdUrl">Заметки по низкоуровневому обнаружению</a>
+   </div>
+
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/distributed_monitoring" class="nodeFdUrl">16. Распределенный мониторинг</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/distributed_monitoring/proxies" class="nodeFdUrl">1 Прокси</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/encryption" class="nodeFdUrl">17. Шифрование</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/encryption/using_certificates" class="nodeFdUrl">1 Использование сертификатов</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/encryption/using_pre_shared_keys" class="nodeFdUrl">2 Использование pre-shared ключей</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/encryption/troubleshooting" class="nodeFdUrl">3 Решение проблем</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/encryption/troubleshooting/connection_permission_problems" class="nodeFdUrl">1 Проблемы с типом подключения или правами</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/encryption/troubleshooting/certificate_problems" class="nodeFdUrl">2 Проблемы с сертификатами</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/encryption/troubleshooting/psk_problems" class="nodeFdUrl">3 Проблемы с PSK</a>
+   </div>
+
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/web_interface" class="nodeFdUrl">18. Веб-интерфейс</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/menu" class="nodeFdUrl">1 Меню</a>
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections" class="nodeFdUrl">2 Разделы веб-интерфейса</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring" class="nodeFdUrl">1 Мониторинг</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/dashboard" class="nodeFdUrl">1 ПАНЕЛЬ</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/dashboard/widgets" class="nodeFdUrl">1 Виджеты ПАНЕЛИ</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/problems" class="nodeFdUrl">2 Проблемы</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/hosts" class="nodeFdUrl">3 Узлы сети</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/hosts/graphs" class="nodeFdUrl">1 Графики</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/hosts/web" class="nodeFdUrl">2 Веб-сценарии</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/overview" class="nodeFdUrl">4 Обзор</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/latest_data" class="nodeFdUrl">5 Последние данные</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/screens" class="nodeFdUrl">6 Комплексные экраны</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/maps" class="nodeFdUrl">7 Карты сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/discovery" class="nodeFdUrl">8 Обнаружение</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/monitoring/it_services" class="nodeFdUrl">9 Услуги</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/inventory" class="nodeFdUrl">2 Инвентаризация</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/inventory/overview" class="nodeFdUrl">1 Обзор</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/inventory/hosts" class="nodeFdUrl">2 Узлы сети</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports" class="nodeFdUrl">3 Отчеты</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/status_of_zabbix" class="nodeFdUrl">1 Информация о систсеме</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/availability" class="nodeFdUrl">2 Отчет о доступности</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/triggers_top" class="nodeFdUrl">3 100 наиболее активных триггеров</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/audit" class="nodeFdUrl">4 Аудит</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/action_log" class="nodeFdUrl">5 Журнал действий</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/reports/notifications" class="nodeFdUrl">6 Оповещения</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration" class="nodeFdUrl">4 Настройка</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hostgroups" class="nodeFdUrl">1 Группы узлов сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/templates" class="nodeFdUrl">2 Шаблоны</a>
+    </div>
+
+   	<div class="dTreeNode  expandable">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts" class="nodeFdUrl">3 Узлы сети</a>
+    </div>
+    <div class="clip ">
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/applications" class="nodeFdUrl">1 Группы элементов данных</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/items" class="nodeFdUrl">2 Элементы данных</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/triggers" class="nodeFdUrl">3 Триггеры</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/graphs" class="nodeFdUrl">4 Графики</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/discovery" class="nodeFdUrl">5 Правила обнаружения</a>
+     </div>
+
+    	<div class="dTreeNode  ">
+     	<span class="expand-collapse"></span>
+     	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/hosts/web" class="nodeFdUrl">6 Веб-сценарии</a>
+     </div>
+
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/maintenance" class="nodeFdUrl">4 Обслуживание</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/actions" class="nodeFdUrl">5 Действия</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/correlation" class="nodeFdUrl">6 Корреляция событий</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/discovery" class="nodeFdUrl">6 Обнаружение</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/configuration/itservices" class="nodeFdUrl">7 Услуги</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration" class="nodeFdUrl">5 Администрирование</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/general" class="nodeFdUrl">1 Общие</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/proxies" class="nodeFdUrl">2 Прокси</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/authentication" class="nodeFdUrl">3 Аутентификация</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/user_groups" class="nodeFdUrl">4 Группы пользователей</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/users" class="nodeFdUrl">5 Пользователи</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/mediatypes" class="nodeFdUrl">6 Способы оповещений</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/scripts" class="nodeFdUrl">7 Скрипты</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/web_interface/frontend_sections/administration/queue" class="nodeFdUrl">8 Очередь</a>
+    </div>
+
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/user_profile" class="nodeFdUrl">3 Профиль пользователя</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/user_profile/global_notifications" class="nodeFdUrl">1 Глобальные оповещения</a>
+   </div>
+
+  	<div class="dTreeNode  ">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/web_interface/user_profile/sound" class="nodeFdUrl">2 Звук в браузерах</a>
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/global_search" class="nodeFdUrl">4 Глобальный поиск</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/maintenance_mode" class="nodeFdUrl">5 Режим обслуживания веб-интерфейса</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/page_parameters" class="nodeFdUrl">6 Параметры страниц</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/definitions" class="nodeFdUrl">7 Определения</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/theming" class="nodeFdUrl">8 Создание своей темы</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/debug_mode" class="nodeFdUrl">9 Режим отладки</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/web_interface/cookies" class="nodeFdUrl">10 Файлы сookie используемые Zabbix</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  expandable">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/api" class="nodeFdUrl">19. API</a>
+ </div>
+ <div class="clip ">
+ 	<div class="dTreeNode  expandable">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/api/reference" class="nodeFdUrl">Справочник методов</a>
+  </div>
+  <div class="clip ">
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/auditlog" class="nodeFdUrl">Audit log</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/auditlog/object" class="nodeFdUrl">&gt; Audit log object</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/auditlog/get" class="nodeFdUrl">auditlog.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/autoregistration" class="nodeFdUrl">Autoregistration</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/autoregistration/object" class="nodeFdUrl">&gt; Autoregistration object</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/autoregistration/get" class="nodeFdUrl">autoregistration.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/autoregistration/update" class="nodeFdUrl">autoregistration.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/httptest" class="nodeFdUrl">Веб-сценарий</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/httptest/object" class="nodeFdUrl">&gt; Объект веб-сценария</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/httptest/create" class="nodeFdUrl">httptest.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/httptest/delete" class="nodeFdUrl">httptest.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/httptest/get" class="nodeFdUrl">httptest.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/httptest/update" class="nodeFdUrl">httptest.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/graph" class="nodeFdUrl">График</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graph/object" class="nodeFdUrl">&gt; Объект графика</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graph/create" class="nodeFdUrl">graph.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graph/delete" class="nodeFdUrl">graph.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graph/get" class="nodeFdUrl">graph.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graph/update" class="nodeFdUrl">graph.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/usergroup" class="nodeFdUrl">Группа пользователей</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usergroup/object" class="nodeFdUrl">&gt; Объект группы пользователей</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usergroup/create" class="nodeFdUrl">usergroup.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usergroup/delete" class="nodeFdUrl">usergroup.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usergroup/get" class="nodeFdUrl">usergroup.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usergroup/update" class="nodeFdUrl">usergroup.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup" class="nodeFdUrl">Группа узлов сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/object" class="nodeFdUrl">&gt; Объект группы узлов сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/create" class="nodeFdUrl">hostgroup.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/delete" class="nodeFdUrl">hostgroup.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/get" class="nodeFdUrl">hostgroup.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/massadd" class="nodeFdUrl">hostgroup.massadd</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/massremove" class="nodeFdUrl">hostgroup.massremove</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/massupdate" class="nodeFdUrl">hostgroup.massupdate</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostgroup/update" class="nodeFdUrl">hostgroup.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/application" class="nodeFdUrl">Группа элементов данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/object" class="nodeFdUrl">&gt; Объект группы элементов данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/create" class="nodeFdUrl">application.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/delete" class="nodeFdUrl">application.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/get" class="nodeFdUrl">application.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/massadd" class="nodeFdUrl">application.massadd</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/application/update" class="nodeFdUrl">application.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/action" class="nodeFdUrl">Действие</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/action/object" class="nodeFdUrl">&gt; Объект действия</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/action/create" class="nodeFdUrl">action.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/action/delete" class="nodeFdUrl">action.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/action/get" class="nodeFdUrl">action.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/action/update" class="nodeFdUrl">action.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/trend" class="nodeFdUrl">Динамика изменений</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trend/object" class="nodeFdUrl">&gt; Объект динамики изменений</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trend/get" class="nodeFdUrl">trend.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/task" class="nodeFdUrl">Задача</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/task/object" class="nodeFdUrl">&gt; Task object</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/task/create" class="nodeFdUrl">task.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/task/get" class="nodeFdUrl">task.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/image" class="nodeFdUrl">Изображение</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/image/object" class="nodeFdUrl">&gt; Объект изображения</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/image/create" class="nodeFdUrl">image.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/image/delete" class="nodeFdUrl">image.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/image/get" class="nodeFdUrl">image.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/image/update" class="nodeFdUrl">image.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface" class="nodeFdUrl">Интерфейс узла сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/object" class="nodeFdUrl">&gt; Объект интерфейса узла сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/create" class="nodeFdUrl">hostinterface.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/delete" class="nodeFdUrl">hostinterface.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/get" class="nodeFdUrl">hostinterface.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/massadd" class="nodeFdUrl">hostinterface.massadd</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/massremove" class="nodeFdUrl">hostinterface.massremove</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/replacehostinterfaces" class="nodeFdUrl">hostinterface.replacehostinterfaces</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostinterface/update" class="nodeFdUrl">hostinterface.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/apiinfo" class="nodeFdUrl">Информация о API</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/apiinfo/version" class="nodeFdUrl">apiinfo.version</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/history" class="nodeFdUrl">История</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/history/object" class="nodeFdUrl">&gt; Объект истории</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/history/get" class="nodeFdUrl">history.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/map" class="nodeFdUrl">Карта сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/map/object" class="nodeFdUrl">&gt; Объект карты сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/map/create" class="nodeFdUrl">map.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/map/delete" class="nodeFdUrl">map.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/map/get" class="nodeFdUrl">map.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/map/update" class="nodeFdUrl">map.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/screen" class="nodeFdUrl">Комплексный экран</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screen/object" class="nodeFdUrl">&gt; Объект комплексного экрана</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screen/create" class="nodeFdUrl">screen.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screen/delete" class="nodeFdUrl">screen.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screen/get" class="nodeFdUrl">screen.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screen/update" class="nodeFdUrl">screen.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen" class="nodeFdUrl">Комплексный экран шаблона</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/object" class="nodeFdUrl">&gt; Объект комплексного экрана шаблона</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/copy" class="nodeFdUrl">templatescreen.copy</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/create" class="nodeFdUrl">templatescreen.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/delete" class="nodeFdUrl">templatescreen.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/get" class="nodeFdUrl">templatescreen.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreen/update" class="nodeFdUrl">templatescreen.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/configuration" class="nodeFdUrl">Конфигурация</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/configuration/export" class="nodeFdUrl">configuration.export</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/configuration/import" class="nodeFdUrl">configuration.import</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/correlation" class="nodeFdUrl">Корреляция</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/correlation/object" class="nodeFdUrl">&gt; Объект корреляции</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/correlation/create" class="nodeFdUrl">correlation.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/correlation/delete" class="nodeFdUrl">correlation.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/correlation/get" class="nodeFdUrl">correlation.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/correlation/update" class="nodeFdUrl">correlation.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/dservice" class="nodeFdUrl">Обнаруженный сервис</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dservice/object" class="nodeFdUrl">&gt; Объект обнаруженного сервиса</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dservice/get" class="nodeFdUrl">dservice.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/dhost" class="nodeFdUrl">Обнаруженный узел сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dhost/object" class="nodeFdUrl">&gt; Объект обнаруженного узла сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dhost/get" class="nodeFdUrl">dhost.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/maintenance" class="nodeFdUrl">Обслуживание</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/maintenance/object" class="nodeFdUrl">&gt; Объект обслуживания</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/maintenance/create" class="nodeFdUrl">maintenance.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/maintenance/delete" class="nodeFdUrl">maintenance.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/maintenance/get" class="nodeFdUrl">maintenance.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/maintenance/update" class="nodeFdUrl">maintenance.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/alert" class="nodeFdUrl">Оповещение</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/alert/object" class="nodeFdUrl">&gt; Объект оповещения</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/alert/get" class="nodeFdUrl">alert.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/dashboard" class="nodeFdUrl">Панель</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dashboard/object" class="nodeFdUrl">&gt; Объект панели</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dashboard/create" class="nodeFdUrl">dashboard.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dashboard/delete" class="nodeFdUrl">dashboard.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dashboard/get" class="nodeFdUrl">dashboard.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dashboard/update" class="nodeFdUrl">dashboard.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/user" class="nodeFdUrl">Пользователь</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/object" class="nodeFdUrl">&gt; Объект пользователя</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/user.checkauthentication" class="nodeFdUrl">user.checkAuthentication</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/create" class="nodeFdUrl">user.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/delete" class="nodeFdUrl">user.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/get" class="nodeFdUrl">user.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/login" class="nodeFdUrl">user.login</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/logout" class="nodeFdUrl">user.logout</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/user/update" class="nodeFdUrl">user.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/usermacro" class="nodeFdUrl">Пользовательский макрос</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/object" class="nodeFdUrl">&gt; Объект пользовательского макроса</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/create" class="nodeFdUrl">usermacro.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/createglobal" class="nodeFdUrl">usermacro.createglobal</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/delete" class="nodeFdUrl">usermacro.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/deleteglobal" class="nodeFdUrl">usermacro.deleteglobal</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/get" class="nodeFdUrl">usermacro.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/update" class="nodeFdUrl">usermacro.update</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/usermacro/updateglobal" class="nodeFdUrl">usermacro.updateglobal</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule" class="nodeFdUrl">Правило LLD</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/object" class="nodeFdUrl">&gt; Объект правила LLD</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/copy" class="nodeFdUrl">discoveryrule.copy</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/create" class="nodeFdUrl">discoveryrule.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/delete" class="nodeFdUrl">discoveryrule.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/get" class="nodeFdUrl">discoveryrule.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/discoveryrule/update" class="nodeFdUrl">discoveryrule.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/drule" class="nodeFdUrl">Правило обнаружения</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/drule/object" class="nodeFdUrl">&gt; Объект правила обнаружения</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/drule/create" class="nodeFdUrl">drule.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/drule/delete" class="nodeFdUrl">drule.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/drule/get" class="nodeFdUrl">drule.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/drule/update" class="nodeFdUrl">drule.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/valuemap" class="nodeFdUrl">Преобразование значений</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/valuemap/object" class="nodeFdUrl">&gt; Объект преобразования значений</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/valuemap/create" class="nodeFdUrl">valuemap.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/valuemap/delete" class="nodeFdUrl">valuemap.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/valuemap/get" class="nodeFdUrl">valuemap.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/valuemap/update" class="nodeFdUrl">valuemap.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/problem" class="nodeFdUrl">Проблема</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/problem/object" class="nodeFdUrl">&gt; Объект проблемы</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/problem/get" class="nodeFdUrl">problem.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/dcheck" class="nodeFdUrl">Проверка обнаружения</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dcheck/object" class="nodeFdUrl">&gt; Объект проверки обнаружения</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/dcheck/get" class="nodeFdUrl">dcheck.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/proxy" class="nodeFdUrl">Прокси</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/proxy/object" class="nodeFdUrl">&gt; Объект прокси</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/proxy/create" class="nodeFdUrl">proxy.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/proxy/delete" class="nodeFdUrl">proxy.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/proxy/get" class="nodeFdUrl">proxy.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/proxy/update" class="nodeFdUrl">proxy.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype" class="nodeFdUrl">Прототип графиков</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype/object" class="nodeFdUrl">&gt; Объект прототипов графиков</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype/create" class="nodeFdUrl">graphprototype.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype/delete" class="nodeFdUrl">graphprototype.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype/get" class="nodeFdUrl">graphprototype.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphprototype/update" class="nodeFdUrl">graphprototype.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype" class="nodeFdUrl">Прототип триггеров</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype/object" class="nodeFdUrl">&gt; Объект прототипа триггеров</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype/create" class="nodeFdUrl">triggerprototype.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype/delete" class="nodeFdUrl">triggerprototype.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype/get" class="nodeFdUrl">triggerprototype.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/triggerprototype/update" class="nodeFdUrl">triggerprototype.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype" class="nodeFdUrl">Прототип узлов сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype/object" class="nodeFdUrl">&gt; Объект прототипа узлов сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype/create" class="nodeFdUrl">hostprototype.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype/delete" class="nodeFdUrl">hostprototype.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype/get" class="nodeFdUrl">hostprototype.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/hostprototype/update" class="nodeFdUrl">hostprototype.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype" class="nodeFdUrl">Прототип элементов данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype/object" class="nodeFdUrl">&gt; Объект прототипа элементов данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype/create" class="nodeFdUrl">itemprototype.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype/delete" class="nodeFdUrl">itemprototype.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype/get" class="nodeFdUrl">itemprototype.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/itemprototype/update" class="nodeFdUrl">itemprototype.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/script" class="nodeFdUrl">Скрипт</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/object" class="nodeFdUrl">&gt; Объект скрипта</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/create" class="nodeFdUrl">script.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/delete" class="nodeFdUrl">script.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/execute" class="nodeFdUrl">script.execute</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/get" class="nodeFdUrl">script.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/getscriptsbyhosts" class="nodeFdUrl">script.getscriptsbyhosts</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/script/update" class="nodeFdUrl">script.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/event" class="nodeFdUrl">Событие</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/event/object" class="nodeFdUrl">&gt; Объект события</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/event/acknowledge" class="nodeFdUrl">event.acknowledge</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/event/get" class="nodeFdUrl">event.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/iconmap" class="nodeFdUrl">Соответствие иконок</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/iconmap/object" class="nodeFdUrl">&gt; Объект соответствия иконок</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/iconmap/create" class="nodeFdUrl">iconmap.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/iconmap/delete" class="nodeFdUrl">iconmap.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/iconmap/get" class="nodeFdUrl">iconmap.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/iconmap/update" class="nodeFdUrl">iconmap.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/mediatype" class="nodeFdUrl">Способ оповещения</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/mediatype/object" class="nodeFdUrl">&gt; Объект способа оповещения</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/mediatype/create" class="nodeFdUrl">mediatype.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/mediatype/delete" class="nodeFdUrl">mediatype.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/mediatype/get" class="nodeFdUrl">mediatype.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/mediatype/update" class="nodeFdUrl">mediatype.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/trigger" class="nodeFdUrl">Триггер</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/object" class="nodeFdUrl">&gt; Объект триггера</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/adddependencies" class="nodeFdUrl">trigger.adddependencies</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/create" class="nodeFdUrl">trigger.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/delete" class="nodeFdUrl">trigger.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/deletedependencies" class="nodeFdUrl">trigger.deletedependencies</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/get" class="nodeFdUrl">trigger.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/trigger/update" class="nodeFdUrl">trigger.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/host" class="nodeFdUrl">Узел сети</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/object" class="nodeFdUrl">&gt; Объект узла сети</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/create" class="nodeFdUrl">host.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/delete" class="nodeFdUrl">host.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/get" class="nodeFdUrl">host.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/massadd" class="nodeFdUrl">host.massadd</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/massremove" class="nodeFdUrl">host.massremove</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/massupdate" class="nodeFdUrl">host.massupdate</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/host/update" class="nodeFdUrl">host.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/service" class="nodeFdUrl">Услуга</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/object" class="nodeFdUrl">&gt; Объект услуги</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/adddependencies" class="nodeFdUrl">service.adddependencies</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/addtimes" class="nodeFdUrl">service.addtimes</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/create" class="nodeFdUrl">service.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/delete" class="nodeFdUrl">service.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/deletedependencies" class="nodeFdUrl">service.deletedependencies</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/deletetimes" class="nodeFdUrl">service.deletetimes</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/get" class="nodeFdUrl">service.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/getsla" class="nodeFdUrl">service.getsla</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/service/update" class="nodeFdUrl">service.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/template" class="nodeFdUrl">Шаблон</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/object" class="nodeFdUrl">&gt; Объект шаблона</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/create" class="nodeFdUrl">template.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/delete" class="nodeFdUrl">template.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/get" class="nodeFdUrl">template.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/massadd" class="nodeFdUrl">template.massadd</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/massremove" class="nodeFdUrl">template.massremove</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/massupdate" class="nodeFdUrl">template.massupdate</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/template/update" class="nodeFdUrl">template.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/graphitem" class="nodeFdUrl">Элемент графика</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphitem/object" class="nodeFdUrl">&gt; Объект элемента графика</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/graphitem/get" class="nodeFdUrl">graphitem.get</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/item" class="nodeFdUrl">Элемент данных</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/item/object" class="nodeFdUrl">&gt; Объект элемента данных</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/item/create" class="nodeFdUrl">item.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/item/delete" class="nodeFdUrl">item.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/item/get" class="nodeFdUrl">item.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/item/update" class="nodeFdUrl">item.update</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/screenitem" class="nodeFdUrl">Элемент комплексного экрана</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/object" class="nodeFdUrl">&gt; Объект элемента комплексного экрана</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/create" class="nodeFdUrl">screenitem.create</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/delete" class="nodeFdUrl">screenitem.delete</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/get" class="nodeFdUrl">screenitem.get</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/update" class="nodeFdUrl">screenitem.update</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/screenitem/updatebyposition" class="nodeFdUrl">screenitem.updatebyposition</a>
+    </div>
+
+   </div>
+
+  	<div class="dTreeNode  expandable">
+   	<span class="expand-collapse"></span>
+   	<a href="/documentation/5.0/ru/manual/api/reference/templatescreenitem" class="nodeFdUrl">Элемент комплексного экрана шаблона</a>
+   </div>
+   <div class="clip ">
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreenitem/object" class="nodeFdUrl">&gt; Объект элемента комплексного экрана шаблона</a>
+    </div>
+
+   	<div class="dTreeNode  ">
+    	<span class="expand-collapse"></span>
+    	<a href="/documentation/5.0/ru/manual/api/reference/templatescreenitem/get" class="nodeFdUrl">templatescreenitem.get</a>
+    </div>
+
+   </div>
+
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/api/changes_4.4_-_5.0" class="nodeFdUrl">Appendix 2. Changes from 4.4 to 5.0</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/api/changes_5.0" class="nodeFdUrl">Zabbix API changes in 5.0</a>
+  </div>
+
+ 	<div class="dTreeNode  ">
+  	<span class="expand-collapse"></span>
+  	<a href="/documentation/5.0/ru/manual/api/reference_commentary" class="nodeFdUrl">Приложение 1. Справочные комментарии</a>
+  </div>
+
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manual/modules" class="nodeFdUrl">20. Модули</a>
+ </div>
+
+</div>
+<div class="dTreeNode  expandable">
+	<span class="expand-collapse"></span>
+	<a href="/documentation/5.0/ru/manpages" class="nodeFdUrl">Страницы помощи Zabbix</a>
+</div>
+<div class="clip ">
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_agent2" class="nodeFdUrl">zabbix_agent2</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_agentd" class="nodeFdUrl">zabbix_agentd</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_get" class="nodeFdUrl">zabbix_get</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_js" class="nodeFdUrl">zabbix_js</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_proxy" class="nodeFdUrl">zabbix_proxy</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_sender" class="nodeFdUrl">zabbix_sender</a>
+ </div>
+
+	<div class="dTreeNode  ">
+ 	<span class="expand-collapse"></span>
+ 	<a href="/documentation/5.0/ru/manpages/zabbix_server" class="nodeFdUrl">zabbix_server</a>
+ </div>
+
+</div></div>
+						</div>
+					</div>
+					<style>#dokuwiki__aside .banner-container [data-show-country],#dokuwiki__aside .banner-container [data-show-country-except] {display: none;}</style>
+
+     <div class="banner-container">
+       <div data-show-country-except="cn" style="width: 330px; margin: 0 0 20px 20px;">
+           <a href="https://www.zabbix.com/events/zabbix_summit_2024?utm_source=doc&amp;utm_medium=sidebanner" target="_blank" style="text-decoration: none;">
+               <img src="https://assets.zabbix.com/img/banners/events/zabbix_summit_2024_330x555.png" style="padding: 0px 0 8px 0;" alt="Zabbix Summit 2024">
+           </a>
+       </div>
+       <div data-show-country="cn" style="width: 330px; margin: 0 0 20px 20px;">
+           <a href="https://www.zabbix.com/events#conference_china_2024" target="_blank" style="text-decoration: none;">
+               <img src="https://assets.zabbix.com/img/banners/events/conference_china_2024_330x173.png" style="padding: 0px 0 8px 0;" alt="Zabbix Conference China">
+           </a>
+       </div>
+
+     </div>				</div>
+
+				<div id="dokuwiki__content">
+					<div class="pad group">
+						<div class="page group">
+														<div id="toc-main" class="toc-container">
+								<div class="toc-header"><div><i class="icon-toc"></i>Table of Contents</div><i class="icon-toc-toggle"></i></div>
+								<div class="toc-body"><ul>
+<li><a href="#руководство-по-zabbix">Руководство по Zabbix</a>
+<ul>
+<li><a href="#copyright-notice">Copyright notice</a></li>
+</ul></li>
+</ul></div>
+							</div>
+							
+							<h1 id="руководство-по-zabbix">Руководство по Zabbix</h1>
+       <p>Добро пожаловать в руководство по программному обеспечению Zabbix. Это руководство создано для помощи пользователям в успешном выполнении задач мониторинга при помощью Zabbix, от самых простых к более сложным.</p>
+       <h3 id="copyright-notice">Copyright notice</h3>
+       <p>Zabbix documentation is NOT distributed under a GPL license. Use of Zabbix documentation is subject to the following terms:</p>
+       <p>You may create a printed copy of this documentation solely for your own personal use. Conversion to other formats is allowed as long as the actual content is not altered or edited in any way. You shall not publish or distribute this documentation in any form or on any media, except if you distribute the documentation in a manner similar to how Zabbix disseminates it (that is, electronically for download on a Zabbix web site) or on a USB or similar medium, provided however that the documentation is disseminated together with the software on the same medium. Any other use, such as any dissemination of printed copies or use of this documentation, in whole or in part, in another publication, requires the prior written consent from an authorized representative of Zabbix. Zabbix reserves any and all rights to this documentation not expressly granted above.</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- ********** FOOTER ********** -->
+				<div id="dokuwiki__footer">
+					<div class="copyright"><span>© 2001-2024 by Zabbix SIA.</span> <span>All rights reserved.</span></div>
+					<div class="license">Except where otherwise noted, Zabbix Documentation is licensed under the following <a href="https://www.zabbix.com/documentation/info/en/license" rel="license">license</a></div>    <div class="privacy"><a href="https://www.zabbix.com/trademark">Trademark Policy</a></div>
+				</div>
+				<!-- /footer -->
+			</div>
+		</div>
+		<a href="#" id="back-to-top" class="hidden">Back to top</a>
+	</div><!-- /site -->
+
+	<div class="hidden">
+		<div class="copy"><div class="msg-copy">Copy</div><div class="msg-copied">✔ Copied</div></div>
+	</div>
+	<template name="report-mistake">
+ 	<div class="mistakeDialog__wraper" data-action="close-modal">
+ 		<div class="mistakeDialog__block">
+ 			<form method="post">
+ 				<input type="hidden" name="action" value="send_mistake">
+                 <input type="hidden" name="url" value="<%= url %>">
+                 <input type="hidden" name="lang" value="ru">
+                 <input type="hidden" name="doc_file" value="5.0/ru/manual">
+ 				<div class="mistakeDialog__header">Предложить улучшение<span class="close__icon" data-action="close-modal"></span></div>
+ 				<div class="mistakeDialog__bodyWrapper">
+ 					<div class="mistakeDialog__quoteBlock visible">
+ 						<span class="quote__icon quote__icon-open"></span>
+ 						<span class="quote__block"><q>%= selection %&gt;</q></span>
+ 						<span class="quote__icon quote__icon-close"></span>
+ 						<textarea style="display: none;" name="mistake">&lt;%= context %&gt;</textarea>
+ 					</div>
+ 					<div class="mistakeDialog__commentBlock visible">
+ 						<textarea placeholder="Комментарий (необязательно)" name="comment" maxlength="255" autofocus></textarea>
+ 					</div>
+ 					<div class="mistakeDialog__feedback hidden">
+ 						Спасибо за сообщение! Наши редакторы получат ваш отчет и рассмотрят необходимость предлагаемых изменений. 
+ 						Обратите внимание, что мы не можем ответить. Если вы хотите следить за прогрессом или участвовать в обсуждении, 
+ 						вы можете создать отчет об ошибке в документации на <a href="https://support.zabbix.com/" target="_blank">https://support.zabbix.com/</a>
+ 					</div>
+ 				</div>
+ 				<div class="mistakeDialog__buttonBlock">
+ 					<button type="submit" class="visible">Отправить</button>
+ 					<button class="close-button hidden" data-action="close-modal">Закрыть</button>
+ 				</div>
+ 			</form>
+ 		</div>
+ 	</div>
+ </template>
+ <template name="report-mistake-hint">
+ 	<div class="mistake__message">
+ 		<div class="mistakeMessage__h2">To toggle search highlight, press <span>Ctrl+Alt+H</span></div>
+ 		<div class="mistakeMessage__h2">Have an improvement suggestion for this page? Select the text that could be improved and press <span>Ctrl+Enter</span> to send it to the editors.</div>
+ 	</div>
+ </template>
+ <template name="report-mistake-hint-mac">
+ 	<div class="mistake__message">
+ 		<div class="mistakeMessage__h2">To toggle search highlight, press <span>Command+Alt+H</span></div>
+ 		<div class="mistakeMessage__h2">Have an improvement suggestion for this page? Select the text that could be improved and press <span>Command+Enter</span> to send it to the editors.</div>
+ 	</div>
+ </template>	<template name="report-example">
+            	<div class="mistakeDialog__wraper" data-action="close-modal">
+            		<div class="mistakeDialog__block">
+                        <form method="post">
+                            <input type="hidden" name="action" value="send_mistake">
+                            <input type="hidden" name="url" value="<%= url %>">
+                            <input type="hidden" name="lang" value="en">
+                            <input type="hidden" name="doc_file" value="5.0/ru/manual">
+                            <input type="hidden" name="comment" value="Suggestion of example">
+                            <div class="mistakeDialog__header">Предложить пример<span class="close__icon" data-action="close-modal"></span></div>
+                            <div class="mistakeDialog__bodyWrapper">
+                                <div class="mistakeDialog__commentBlock visible">
+                                    <textarea placeholder="Содержимое примера. (максимальная длинна 255 знаков)" name="mistake" maxlength="255" autofocus></textarea>
+                                </div>
+                                <div class="mistakeDialog__feedback hidden">
+                                    Спасибо, мы ценим ваш вклад! Наши технические писатели рассмотрят предложенный пример и возможность внедрения его на странице.
+                                    Пожалуйста, обратите внимание, что мы не можем предоставить ответ, однако ваше предложение имеет высокую ценность для нас в совершенствовании нашей документации.
+                                </div>
+                            </div>
+                            <div class="mistakeDialog__buttonBlock">
+                                <button type="submit" class="visible">Отправить</button>
+                                <button class="close-button hidden" data-action="close-modal">Закрыть</button>
+                            </div>
+                        </form>
+            		</div>
+            	</div>
+            </template>
+<script type="text/javascript">
+const PAGE = '5.0/ru/manual';
+const VERSION = '5.0';
+const LANG = 'ru';
+const LANG_ALIAS = 'ru';
+let KEYBOARD_SHORTCUTS_ENABLED = true;
+document.addEventListener('DOMContentLoaded', e => {
+	new ReportExampleModal();
+	new ReportMistakeModal();
+});
+</script>
+	<script type="text/javascript" src="/documentation/5.0/app.min.js?162c4455b644de3c"></script>
+</body>
+

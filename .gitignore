@@ -4,3 +4,4 @@ composer.lock
 .idea
 downloads
 db/teleparser.db
+tests/factWiki.txt
