@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Parser</title>
+    <title>Парсер сайтов</title>
     <!-- Import Materialize CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <!-- Import Google Icon Font -->
@@ -52,7 +52,7 @@
 <body>
 <div class="overlay" id="overlay"></div>
 <div class="container" id="content">
-    <h1 class="center-align">Парсер сайта</h1>
+    <h1 class="center-align">Парсер сайтов</h1>
     <form id="parseForm" method="post" action="index.php">
         <div class="input-field">
             <input type="text" id="url" name="url" required value="<?= (isset($_REQUEST['url']) ? $_REQUEST['url'] : 'https://www.zabbix.com/documentation/5.0/ru/manual') ?>"/>
@@ -65,6 +65,10 @@
         <div class="input-field">
             <input type="text" id="pattern" name="pattern" value="<?= (isset($_REQUEST['pattern']) ? $_REQUEST['pattern'] : 'documentation/5.0/ru/manual') ?>"/>
             <label for="depth">Шаблон ссылок для парсинга: </label>
+        </div>
+        <div class="input-field">
+            <input type="text" id="div" name="div" value="<?= (isset($_REQUEST['div']) ? $_REQUEST['div'] : 'dokuwiki__content') ?>"/>
+            <label for="depth">Парсить контент только внутри указанного div (id/class): </label>
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Запуск
             <i class="material-icons right">send</i>

@@ -1,0 +1,6 @@
+////Table of Contents////
+* [[#руководство-по-zabbix|Руководство по Zabbix]]
+* [[#copyright-notice|Copyright notice]]
+= Руководство по Zabbix =
+Добро пожаловать в руководство по программному обеспечению Zabbix. Это руководство создано для помощи пользователям в успешном выполнении задач мониторинга при помощью Zabbix, от самых простых к более сложным.=== Copyright notice ===
+Zabbix documentation is NOT distributed under a GPL license. Use of Zabbix documentation is subject to the following terms:You may create a printed copy of this documentation solely for your own personal use. Conversion to other formats is allowed as long as the actual content is not altered or edited in any way. You shall not publish or distribute this documentation in any form or on any media, except if you distribute the documentation in a manner similar to how Zabbix disseminates it (that is, electronically for download on a Zabbix web site) or on a USB or similar medium, provided however that the documentation is disseminated together with the software on the same medium. Any other use, such as any dissemination of printed copies or use of this documentation, in whole or in part, in another publication, requires the prior written consent from an authorized representative of Zabbix. Zabbix reserves any and all rights to this documentation not expressly granted above.

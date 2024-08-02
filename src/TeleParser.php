@@ -52,13 +52,14 @@ class TeleParser
     }
 
     /**
-     * @param $url
-     * @param $depth
-     * @param $visited
+     * @param string $url
+     * @param int $depth
+     * @param array $visited
+     * @param string $div
      *
      * @return void
      */
-    public function downloadPage($url, $pattern, $depth, $visited = [])
+    public function downloadPage($url, $pattern = '', $depth = 0, $visited = [], $div = '')
     {
         // too deep?
         if ($depth < 0) {
@@ -116,7 +117,7 @@ class TeleParser
         // Generate DokuWiki page
         $converter = new HtmlToDokuWiki();
         try {
-                $wiki = $converter->convert($html);
+            $wiki = $converter->convert($html, $div);
         } catch (Exception $e) {
             echo 'Ошибка: ' . $e->getMessage() . "<br />";
             $this->log('Ошибка: ' . $e->getMessage());
@@ -142,7 +143,7 @@ class TeleParser
         $this->parsedUrls[] = $url;
 
         // Process internal links
-        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited) {
+        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited, $div) {
             $link = $node->attr('href');
             $this->log("[ " . $link . " ]");
             // parse links only from the same domain
@@ -153,7 +154,7 @@ class TeleParser
                     return;
                 }
                 $this->log( " - QUEUED ...\n");
-                $this->downloadPage($link, $pattern, $depth - 1,  $visited);
+                $this->downloadPage($link, $pattern, $depth - 1,  $visited, $div);
             } else {
                 $this->log(" - SKIP (by domain)\n");
             }

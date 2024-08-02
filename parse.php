@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $url      = trim($_POST['url']);
     $depth    = (int)$_POST['depth'];
     $pattern  = trim($_POST['pattern']);
+    $div      = trim($_POST['div']);
 
     // calc
     $baseDir  = 'downloads';
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Do parsing
-    $parser->downloadPage($url, $pattern, $depth);
+    $parser->downloadPage($url, $pattern, $depth, [], $div);
 
     echo "<li><p>Парсинг успешно выполнен.</p></li>\n";
     echo "<li><p>Все файлы сохранены в папку: <br /><pre>{$baseDir}</pre></p></li>\n";

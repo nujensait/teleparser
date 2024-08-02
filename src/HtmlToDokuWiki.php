@@ -1,15 +1,44 @@
 <?php
 
+/**
+ * Convert html to DokuWiki
+ */
+
 namespace src;
 
 class HtmlToDokuWiki
 {
-    public function convert($html)
+    /**
+     * @param string $html
+     * @param string $div
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function convert(string $html, string $div = '')
     {
         // Загружаем HTML с помощью DOMDocument
         $dom = new \DOMDocument();
         @$dom->loadHTML($html);
-        $body = $dom->getElementsByTagName('body')->item(0);
+
+        if($div === '') {
+            $body = $dom->getElementsByTagName('body')->item(0);              // full HTML
+        } else {
+            $body = $dom->getElementById($div);          // content part of HTML
+            // also try to find by class:
+            if ($body === null) {
+                // Find elements by class name
+                $elements = $this->findElementsByClass($dom, $div);
+                if(is_array($elements) && count($elements)) {
+                    $body = $elements[0];
+                }
+            }
+        }
+
+        // nothing found?
+        if ($body === null) {
+            throw new \Exception("Element with id='{$div}' not found.");
+        }
 
         $dokuWikiContent = $this->convertNode($body);
 
@@ -17,11 +46,25 @@ class HtmlToDokuWiki
         $dokuWikiContent = $this->cleanOutput($dokuWikiContent);
 
         // Validate DokuWiki content
-        if (!$this->validateDokuWiki($dokuWikiContent)) {
-            throw new \Exception("Generated DokuWiki content failed validation.");
+        $errors = $this->validateDokuWiki($dokuWikiContent);
+        if (!empty($errors)) {
+            throw new \Exception("Generated DokuWiki content failed validation: " . implode("; ", $errors));
         }
 
         return $dokuWikiContent;
+    }
+
+    /**
+     * @param DomElement $dom
+     * @param string $className
+     *
+     * @return \DOMNodeList|false|mixed
+     */
+    private function findElementsByClass($dom, $className)
+    {
+        $xpath = new \DOMXPath($dom);
+        $query = "//*[contains(concat(' ', normalize-space(@class), ' '), ' $className ')]";
+        return $xpath->query($query);
     }
 
     private function convertNode($node)
@@ -121,10 +164,15 @@ class HtmlToDokuWiki
         return '__' . $this->convertNode($element) . '__';
     }
 
+    /**
+     * @param \DOMElement $element
+     *
+     * @return string
+     */
     private function convertLink($element)
     {
         $href = $element->getAttribute('href');
-        $text = $this->convertNode($element);
+        $text = $element->textContent;// $this->convertNode($element);
 
         return '[[' . $href . '|' . $text . ']]';
     }
@@ -201,18 +249,78 @@ class HtmlToDokuWiki
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////]
     /// Checks
 
-    private function cleanOutput($output)
+    /**
+     * Delete empty strings
+     * @param string $output
+     *
+     * @return string
+     */
+    private function cleanOutput(string $output)
     {
         // Remove empty lines and leading/trailing spaces
         $output = preg_replace("/^\s+|\s+$/m", '', $output);
+
+        // remove empty lines
         $output = preg_replace("/\n{2,}/", "\n", $output);
+
+        // add \n after headers:
+        $output = preg_replace( '/(=+ .*? =+)/', "$1\n", $output);
+
         return trim($output);
     }
 
+    /**
+     * DokuWiki validation
+     * @param string $content
+     *
+     * @return bool
+     */
     private function validateDokuWiki($content)
     {
-        // Add additional checks for DokuWiki syntax validity here
-        // For example, check for unclosed tags or invalid links
-        return true;
+        $errors = [];
+
+        // Проверка правильного форматирования заголовков
+        if (preg_match_all('/^(=+[^=]+?=+)$/m', $content, $matches)) {
+            foreach ($matches[0] as $heading) {
+                if (!preg_match('/^=+ .+? =+$/', $heading)) {
+                    $errors[] = "Invalid heading format: $heading";
+                }
+            }
+        }
+
+        // Проверка на наличие незакрытых тегов
+        if (preg_match('/<[^\/>]*>/', $content)) {
+            $errors[] = "Found unclosed tags in the content.";
+        }
+
+        // Проверка корректности ссылок
+        if (preg_match_all('/\[\[(.*?)\]\]/', $content, $matches)) {
+            foreach ($matches[1] as $link) {
+                if (!preg_match('/^(.+?\|.+?)$/', $link) && !filter_var($link, FILTER_VALIDATE_URL)) {
+                    $errors[] = "Invalid link format: $link";
+                }
+            }
+        }
+
+        // Проверка корректности изображений
+        if (preg_match_all('/\{\{(.*?)\}\}/', $content, $matches)) {
+            foreach ($matches[1] as $image) {
+                if (!preg_match('/^(.+?\|.*)$/', $image)) {
+                    $errors[] = "Invalid image format: $image";
+                }
+            }
+        }
+
+        // Проверка на незакрытые или неверно вложенные элементы
+        $tags = ['**' => '**', '//' => '//', '__' => '__', '<code>' => '</code>', '`' => '`'];
+        foreach ($tags as $open => $close) {
+            $openCount = substr_count($content, $open);
+            $closeCount = substr_count($content, $close);
+            if ($openCount !== $closeCount) {
+                $errors[] = "Unmatched tag: $open";
+            }
+        }
+
+        return $errors;
     }
 }
