@@ -1,15 +1,31 @@
 <?php
 
+namespace src;
+
 class HtmlToDokuWiki
 {
     public function convert($html)
     {
-        // Загружаем HTML с помощью DOMDocument
-        $dom = new DOMDocument();
-        @$dom->loadHTML($html);
-        $body = $dom->getElementsByTagName('body')->item(0);
+        // Load HTML using DOMDocument
+        $dom = new \DOMDocument();
+        @$dom->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $contentDiv = $dom->getElementById('dokuwiki__content');
 
-        return $this->convertNode($body);
+        if ($contentDiv === null) {
+            throw new \Exception("Element with id='dokuwiki__content' not found.");
+        }
+
+        $dokuWikiContent = $this->convertNode($contentDiv);
+
+        // Clean output by removing empty lines and leading/trailing spaces
+        $dokuWikiContent = $this->cleanOutput($dokuWikiContent);
+
+        // Validate DokuWiki content
+        if (!$this->validateDokuWiki($dokuWikiContent)) {
+            throw new \Exception("Generated DokuWiki content failed validation.");
+        }
+
+        return $dokuWikiContent;
     }
 
     private function convertNode($node)
@@ -23,7 +39,7 @@ class HtmlToDokuWiki
 
     private function convertElement($element)
     {
-        if ($element instanceof DOMText) {
+        if ($element instanceof \DOMText) {
             return $this->convertText($element);
         }
 
@@ -52,13 +68,13 @@ class HtmlToDokuWiki
             case 'th': return $this->convertTableCell($element);
             case 'pre': return $this->convertPreformatted($element);
             case 'code': return $this->convertCode($element);
-            default: return $this->convertGeneric($element);
+            default: return ''; // Ignore other elements
         }
     }
 
     private function convertText($text)
     {
-        return htmlspecialchars($text->wholeText);
+        return htmlspecialchars($text->wholeText, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     private function convertHeading($element, $level)
@@ -145,22 +161,36 @@ class HtmlToDokuWiki
 
     private function convertPreformatted($element)
     {
-        return '<code>' . htmlspecialchars($element->textContent) . '</code>';
+        return '<code>' . htmlspecialchars($element->textContent, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</code>';
     }
 
     private function convertCode($element)
     {
-        return '`' . htmlspecialchars($element->textContent) . '`';
+        return '`' . htmlspecialchars($element->textContent, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '`';
     }
 
-    private function convertGeneric($element)
+    private function cleanOutput($output)
     {
-        return $this->convertNode($element);
+        // Remove empty lines and leading/trailing spaces
+        $output = preg_replace("/^\s+|\s+$/m", '', $output);
+        $output = preg_replace("/\n{2,}/", "\n", $output);
+        return trim($output);
+    }
+
+    private function validateDokuWiki($content)
+    {
+        // Add additional checks for DokuWiki syntax validity here
+        // For example, check for unclosed tags or invalid links
+        return true;
     }
 }
 
 // Пример использования:
-// $html = '<h1>Пример заголовка</h1><p>Это пример <b>жирного</b> текста.</p><p>Это <i>курсивный</i> текст.</p>';
-// $converter = new HtmlToDokuWiki();
-// $dokuWikiText = $converter->convert($html);
-// echo $dokuWikiText;
+//$html = file_get_contents('/mnt/data/manual.html');
+//$converter = new HtmlToDokuWiki();
+//try {
+//    $dokuWikiText = $converter->convert($html);
+//    echo $dokuWikiText;
+//} catch (Exception $e) {
+//    echo 'Ошибка: ' . $e->getMessage();
+//}

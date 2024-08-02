@@ -1,9 +1,12 @@
 <?php
 
-require 'vendor/autoload.php';
-require_once 'HtmlToDokuWiki.php';
+namespace src;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/HtmlToDokuWiki.php';
 
 use Goutte\Client;
+use src\HtmlToDokuWiki;
 use Symfony\Component\DomCrawler\Crawler;
 
 class TeleParser
@@ -34,7 +37,7 @@ class TeleParser
      */
     private function initDatabase()
     {
-        $this->db = new SQLite3('db/teleparser.db');
+        $this->db = new \SQLite3('db/teleparser.db');
         $this->db->exec('CREATE TABLE IF NOT EXISTS parsing (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             start_time DATETIME,
@@ -112,7 +115,12 @@ class TeleParser
 
         // Generate DokuWiki page
         $converter = new HtmlToDokuWiki();
-        $wiki = $converter->convert($html);
+        try {
+                $wiki = $converter->convert($html);
+        } catch (Exception $e) {
+            echo 'Ошибка: ' . $e->getMessage() . "<br />";
+            $this->log('Ошибка: ' . $e->getMessage());
+        }
 
             // Download html
         //$this->downloadResources($crawler, $domain, $localDir);
@@ -361,21 +369,4 @@ class TeleParser
 
         return rmdir($dir);
     }
-}
-
-/**
- * Extracts the domain from a given URL.
- *
- * @param string $url The URL to extract the domain from.
- * @return string The extracted domain.
- */
-function getDomainFromUrl($url)
-{
-    // Parse the URL and get the host component
-    $parsedUrl = parse_url($url, PHP_URL_HOST);
-
-    // Remove 'www.' prefix if present
-    $domain = preg_replace('/^www\./', '', $parsedUrl);
-
-    return $domain;
 }

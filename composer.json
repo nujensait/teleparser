@@ -2,5 +2,15 @@
     "require": {
         "fabpot/goutte": "^4.0",
         "ext-sqlite3": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
 }
