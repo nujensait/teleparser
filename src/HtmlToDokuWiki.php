@@ -11,7 +11,17 @@ class HtmlToDokuWiki
         @$dom->loadHTML($html);
         $body = $dom->getElementsByTagName('body')->item(0);
 
-        return $this->convertNode($body);
+        $dokuWikiContent = $this->convertNode($body);
+
+        // Clean output by removing empty lines and leading/trailing spaces
+        $dokuWikiContent = $this->cleanOutput($dokuWikiContent);
+
+        // Validate DokuWiki content
+        if (!$this->validateDokuWiki($dokuWikiContent)) {
+            throw new \Exception("Generated DokuWiki content failed validation.");
+        }
+
+        return $dokuWikiContent;
     }
 
     private function convertNode($node)
@@ -186,5 +196,23 @@ class HtmlToDokuWiki
     private function convertGeneric($element)
     {
         return $this->convertNode($element);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////]
+    /// Checks
+
+    private function cleanOutput($output)
+    {
+        // Remove empty lines and leading/trailing spaces
+        $output = preg_replace("/^\s+|\s+$/m", '', $output);
+        $output = preg_replace("/\n{2,}/", "\n", $output);
+        return trim($output);
+    }
+
+    private function validateDokuWiki($content)
+    {
+        // Add additional checks for DokuWiki syntax validity here
+        // For example, check for unclosed tags or invalid links
+        return true;
     }
 }
