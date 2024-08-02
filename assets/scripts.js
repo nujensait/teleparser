@@ -59,5 +59,5 @@ document.getElementById('copyButton').addEventListener('click', function() {
     var textarea = document.getElementById('wiki');
     textarea.select();
     document.execCommand('copy');
-    M.toast({html: 'Результат скопирова в буфер обмена.'}); // Показать уведомление
+    M.toast({html: 'Результат скопирован в буфер обмена.'}); // Показать уведомление
 });
