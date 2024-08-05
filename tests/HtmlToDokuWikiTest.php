@@ -7,6 +7,8 @@
  * phpunit tests/HtmlToDokuWikiTest.php --filter testFullHtmlConversion
  */
 
+namespace Tests;
+
 require_once __DIR__ . '/../src/HtmlToDokuWiki.php';
 
 use PHPUnit\Framework\TestCase;
@@ -134,8 +136,8 @@ class HtmlToDokuWikiTest extends TestCase
      */
     public function testConvertImage()
     {
-        $html = '<div id="dokuwiki__content"><img src="image.jpg" alt="Sample Image" /></div>';
-        $expected = "{{image.jpg|Sample Image}}";
+        $html = '<div id="dokuwiki__content"><img src="/assets/images/parser.jpg" alt="Sample Image" /></div>';
+        $expected = "{{/assets/images/parser.jpg|Sample Image}}";
 
         try {
             $fact = $this->converter->convert($html, 'dokuwiki__content');
@@ -148,7 +150,7 @@ class HtmlToDokuWikiTest extends TestCase
 
     /**
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function testElementNotFound()
     {
