@@ -52,21 +52,9 @@ class TeleParserTest extends TestCase
 
     /**
      * @return void
-     */
-    public function testConvertUrl()
-    {
-        $domain = 'https://example.com/';
-
-        $this->assertEquals('https://example.com/page', $this->parser->convertUrl('/page', $domain));
-        $this->assertEquals('https://example.com/image.jpg', $this->parser->convertUrl('image.jpg', $domain));
-        $this->assertEquals('https://other.com/page', $this->parser->convertUrl('https://other.com/page', $domain));
-    }
-
-    /**
-     * @return void
      * @throws \ReflectionException
      */
-    public function fixme_testInitDatabase()
+    public function testInitDatabase()
     {
         $reflection = new \ReflectionClass($this->parser);
         $method     = $reflection->getMethod('initDatabase');

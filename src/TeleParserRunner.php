@@ -44,7 +44,10 @@ class TeleParserRunner
                 'visited'   =>  [],
                 'div'       => $div
             ];
+            /** @var TeleParser $parser */
+            $parser->startParsing($params);
             $parser->downloadPage($params);
+            $parser->finishParsing($params);
         } catch(\Throwable $e) {
             echo "Ошибка парсинга. Детали: " . $e->getMessage();
         }

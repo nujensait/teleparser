@@ -137,4 +137,27 @@ class HtmlUtils
 
         return rmdir($dir);
     }
+
+
+    /**
+     * @param string $path
+     *
+     * @return int
+     */
+    function countDirectoriesInPath(string $path): int
+    {
+        // Удаляем начальный и конечный слэши, если они есть
+        $path = trim($path, '/');
+
+        // Разбиваем путь на компоненты
+        $components = explode('/', $path);
+
+        // Удаляем последний элемент, если это файл (содержит точку)
+        if (strpos(end($components), '.') !== false) {
+            array_pop($components);
+        }
+
+        // Возвращаем количество оставшихся компонентов
+        return count($components);
+    }
 }

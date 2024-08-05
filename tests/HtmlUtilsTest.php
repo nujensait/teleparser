@@ -100,4 +100,29 @@ class HtmlUtilsTest extends TestCase
 
         $this->assertFalse(file_exists($testDir));
     }
+
+
+    /**
+     * Count directories
+     */
+    public function testCountDirectoriesInPath()
+    {
+        $path = '/downloads/20240805_164848_zabbix.com/html/documentation/5.0/ru/manual.html';
+        $directoryCount = $this->utils->countDirectoriesInPath($path);
+
+        //echo "Количество директорий: " . $directoryCount;
+        $this->assertEquals(6, $directoryCount);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConvertUrl()
+    {
+        $domain = 'https://example.com/';
+
+        $this->assertEquals('https://example.com/page', $this->utils->convertUrl('/page', $domain));
+        $this->assertEquals('https://example.com/image.jpg', $this->utils->convertUrl('image.jpg', $domain));
+        $this->assertEquals('https://other.com/page', $this->utils->convertUrl('https://other.com/page', $domain));
+    }
 }
