@@ -64,12 +64,17 @@ if ($selectedTemplate && isset($config[$selectedTemplate])) {
 
             <div class="input-field">
                 <input type="number" id="depth" name="depth" min="0" max="10" required value="<?= $templateData['depth'] ?? (isset($_REQUEST['depth']) ? $_REQUEST['depth'] : 0) ?>"/>
-                <label for="depth">Глубина парсинга: <small class="req">*</small></label>
+                <label for="depth">Глубина парсинга (как глубоко уходить от стартовой страницы): <small class="req">*</small></label>
+            </div>
+
+            <div class="input-field">
+                <input type="number" id="limit" name="limit" min="0" max="10000" required value="<?= $templateData['limit'] ?? (isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 0) ?>"/>
+                <label for="depth">Лимит парсинга (кол-во страниц, 0 - без ограничений): <small class="req">*</small></label>
             </div>
 
             <div class="input-field">
                 <input type="text" id="pattern" name="pattern" value="<?= $templateData['pattern'] ?? (isset($_REQUEST['pattern']) ? $_REQUEST['pattern'] : '') ?>"/>
-                <label for="pattern">Шаблон ссылок для парсинга: </label>
+                <label for="pattern">Шаблон ссылок для парсинга (необязательно): </label>
             </div>
 
             <div class="input-field">

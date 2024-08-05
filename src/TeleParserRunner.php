@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/TeleParser.php';
 
+use src\TeleParser;
+
 class TeleParserRunner
 {
     /**
@@ -13,6 +15,7 @@ class TeleParserRunner
         // params
         $url      = trim($_POST['url'] ?? '');
         $depth    = (int)($_POST['depth'] ?? 0);
+        $limit    = (int)($_POST['limit'] ?? 0);
         $pattern  = trim($_POST['pattern'] ?? '');
         $div      = trim($_POST['div'] ?? '');
 
@@ -33,7 +36,15 @@ class TeleParserRunner
 
         // Do parsing
         try {
-            $parser->downloadPage($url, $pattern, $depth, [], $div);
+            $params = [
+                'url'       => $url,
+                'pattern'   => $pattern,
+                'depth'     => $depth,
+                'limit'     => $limit,
+                'visited'   =>  [],
+                'div'       => $div
+            ];
+            $parser->downloadPage($params);
         } catch(\Throwable $e) {
             echo "Ошибка парсинга. Детали: " . $e->getMessage();
         }

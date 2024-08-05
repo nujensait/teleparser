@@ -52,15 +52,20 @@ class TeleParser
     }
 
     /**
-     * @param string $url
-     * @param int $depth
-     * @param array $visited
-     * @param string $div
+     * @param array $params
+     * Structure: [url, pattern, depth, limit, visited, div]
      *
      * @return void
      */
-    public function downloadPage($url, $pattern = '', $depth = 0, $visited = [], $div = '')
+    public function downloadPage($params)
     {
+        $depth      = $params['depth']   ?? 0;
+        $limit      = $params['limit']   ?? 0;
+        $url        = $params['url']     ?? '';
+        $pattern    = $params['pattern'] ?? '';
+        $visited    = $params['visited'] ?? [];
+        $div        = $params['div']     ?? '';
+
         // too deep?
         if ($depth < 0) {
             return;
@@ -74,7 +79,12 @@ class TeleParser
             return;
         }
 
-        $visited[]      = $url;
+        // amount of visited pages is limited
+        if(count($visited) > $limit) {
+            return;
+        }
+
+        $visited[$url]  = $url;
         $client         = new Client();
         $crawler        = $client->request('GET', $url);
 
@@ -143,7 +153,7 @@ class TeleParser
         $this->parsedUrls[] = $url;
 
         // Process internal links
-        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited, $div) {
+        $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited, $div, $limit) {
             $link = $node->attr('href');
             $this->log("[ " . $link . " ]");
             // parse links only from the same domain
@@ -154,7 +164,15 @@ class TeleParser
                     return;
                 }
                 $this->log( " - QUEUED ...\n");
-                $this->downloadPage($link, $pattern, $depth - 1,  $visited, $div);
+                $params = [
+                    'url'       => $link,
+                    'pattern'   => $pattern,
+                    'depth'     => $depth - 1,
+                    'limit'     => $limit,
+                    'visited'   => $visited,
+                    'div'       => $div
+                ];
+                $this->downloadPage($params);
             } else {
                 $this->log(" - SKIP (by domain)\n");
             }
@@ -369,5 +387,58 @@ class TeleParser
         }
 
         return rmdir($dir);
+    }
+
+    /**
+     * Make absolute links in html
+     * @param string $html
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function convertRelativeToAbsoluteLinks(string $html, string $domain): string
+    {
+        // Убедимся, что домен заканчивается на слеш
+        $domain = rtrim($domain, '/') . '/';
+
+        // Заменяем ссылки в href атрибутах
+        $html = preg_replace_callback(
+            '/\shref=(["\'])(.+?)\1/i',
+            function($matches) use ($domain) {
+                return ' href=' . $matches[1] . $this->convertUrl($matches[2], $domain) . $matches[1];
+            },
+            $html
+        );
+
+        // Заменяем ссылки в src атрибутах
+        $html = preg_replace_callback(
+            '/\ssrc=(["\'])(.+?)\1/i',
+            function($matches) use ($domain) {
+                return ' src=' . $matches[1] . $this->convertUrl($matches[2], $domain) . $matches[1];
+            },
+            $html
+        );
+
+        return $html;
+    }
+
+    /**
+     * @param string $url
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function convertUrl(string $url, string $domain): string
+    {
+        // Проверяем, является ли URL относительным
+        if (substr($url, 0, 2) === '//' || preg_match("~^(?:f|ht)tps?://~i", $url)) {
+            return $url; // URL уже абсолютный
+        }
+
+        if ($url[0] === '/') {
+            return $domain . ltrim($url, '/');
+        }
+
+        return $domain . $url;
     }
 }

@@ -6,6 +6,7 @@ return [
         'data' => [
             'url'       => 'https://www.zabbix.com/documentation/5.0/ru/manual',
             'depth'     => 0,
+            'limit'     => 10,
             'pattern'   => 'documentation/5.0/ru/manual',
             'div'       => 'dokuwiki__content',
             'divid'     => 'dokuwiki__content'
