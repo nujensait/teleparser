@@ -61,3 +61,16 @@ document.getElementById('copyButton').addEventListener('click', function() {
     document.execCommand('copy');
     M.toast({html: 'Результат скопирован в буфер обмена.'}); // Показать уведомление
 });
+
+/**
+ * Redirect to URL after prompt
+ * @param url
+ * @param message
+ * @returns {boolean}
+ */
+function confirmAndRedirect(url, message) {
+    if (confirm(message)) {
+        window.open(url, '_blank');
+    }
+    return false;
+}

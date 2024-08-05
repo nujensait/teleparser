@@ -37,7 +37,7 @@ class HtmlToDokuWiki
 
         // nothing found?
         if ($body === null) {
-            throw new \Exception("Element with id='{$div}' not found.");
+            throw new \Exception("/Элемент html с id='{$div}' не найден.");
         }
 
         $dokuWikiContent = $this->convertNode($body);
@@ -48,7 +48,7 @@ class HtmlToDokuWiki
         // Validate DokuWiki content
         $errors = $this->validateDokuWiki($dokuWikiContent);
         if (!empty($errors)) {
-            throw new \Exception("Generated DokuWiki content failed validation: " . implode("; ", $errors));
+            throw new \Exception("Ошибка валидации сгенерированного DokuWiki: " . implode("; ", $errors));
         }
 
         return $dokuWikiContent;
@@ -279,25 +279,29 @@ class HtmlToDokuWiki
     {
         $errors = [];
 
+        if (trim($content) == '') {
+            $errors[] = "Пустое содержимое файла DokuWiki.";
+        }
+
         // Проверка правильного форматирования заголовков
         if (preg_match_all('/^(=+[^=]+?=+)$/m', $content, $matches)) {
             foreach ($matches[0] as $heading) {
                 if (!preg_match('/^=+ .+? =+$/', $heading)) {
-                    $errors[] = "Invalid heading format: $heading";
+                    $errors[] = "Неверный формат заголовка: $heading";
                 }
             }
         }
 
         // Проверка на наличие незакрытых тегов
         if (preg_match('/<[^\/>]*>/', $content)) {
-            $errors[] = "Found unclosed tags in the content.";
+            $errors[] = "Найдены незакрытые теги.";
         }
 
         // Проверка корректности ссылок
         if (preg_match_all('/\[\[(.*?)\]\]/', $content, $matches)) {
             foreach ($matches[1] as $link) {
                 if (!preg_match('/^(.+?\|.+?)$/', $link) && !filter_var($link, FILTER_VALIDATE_URL)) {
-                    $errors[] = "Invalid link format: $link";
+                    $errors[] = "Неверный формат ссылки: $link";
                 }
             }
         }
@@ -306,7 +310,7 @@ class HtmlToDokuWiki
         if (preg_match_all('/\{\{(.*?)\}\}/', $content, $matches)) {
             foreach ($matches[1] as $image) {
                 if (!preg_match('/^(.+?\|.*)$/', $image)) {
-                    $errors[] = "Invalid image format: $image";
+                    $errors[] = "Неверный формат тега изображения: $image";
                 }
             }
         }
@@ -317,7 +321,7 @@ class HtmlToDokuWiki
             $openCount = substr_count($content, $open);
             $closeCount = substr_count($content, $close);
             if ($openCount !== $closeCount) {
-                $errors[] = "Unmatched tag: $open";
+                $errors[] = "Непарный тег: $open";
             }
         }
 

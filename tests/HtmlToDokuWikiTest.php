@@ -157,7 +157,7 @@ class HtmlToDokuWikiTest extends TestCase
         $html = '<div><h1>Heading outside target div</h1></div>';
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Element with id='dokuwiki__content' not found.");
+        $this->expectExceptionMessage("Элемент html с id='dokuwiki__content' не найден.");
 
         $this->converter->convert($html, 'dokuwiki__content');
     }

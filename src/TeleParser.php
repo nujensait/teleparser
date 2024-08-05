@@ -17,6 +17,7 @@ class TeleParser
     const STATUS_START  = 'start';
     const STATUS_FINISH = 'finish';
     const STATUS_SKIP   = 'skip';
+    const STATUS_ERROR  = 'error';
 
     const ALLOWED_FIELDS = ['start_time', 'finish_time', 'url', 'file', 'status', 'message'];
 
@@ -107,11 +108,11 @@ class TeleParser
             return;
         }
 
-        $parsingId = $this->startPageParsing($url);
+        $parsingId = $this->startResourceParsing($url, 'html', 0);
 
         // already parsed?
         if(in_array($url, $visited) || in_array($url, $this->parsedUrls)) {
-            $this->updatePageParsing($parsingId, ['status' => self::STATUS_SKIP, 'message' => 'Already parsed.']);
+            $this->updateResourceParsing($parsingId, ['status' => self::STATUS_SKIP, 'message' => 'Already parsed.']);
             return;
         }
 
@@ -139,7 +140,7 @@ class TeleParser
         $localDirHtml = dirname($localPathHtml);
 
         if (!file_exists($localDirHtml) && !mkdir($localDirHtml, 0777, true) && !is_dir($localDirHtml)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirHtml));
+            throw new \RuntimeException(sprintf('Директория "%s" не создана', $localDirHtml));
         }
 
         // Same for wiki
@@ -151,17 +152,19 @@ class TeleParser
         $localDirWiki = dirname($localPathWiki);
         if (!file_exists($localDirWiki)) {
             if (!mkdir($localDirWiki, 0777, true) && !is_dir($localDirWiki)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirWiki));
+                throw new \RuntimeException(sprintf('Директория "%s" не создана', $localDirWiki));
             }
         }
-
 
         // replace links from relative to absolute
         $domain = $this->utils->getDomainFromUrl($url);
         $html = $this->utils->convertRelativeToAbsoluteLinks($html, $domain);
 
         // Download and replace external resources
-        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html);
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html, $parsingId);
+
+        // Replace links to local
+        $html = $this->replaceLinksToLocal($html, $domain);
 
         // Generate DokuWiki page
         $converter = new HtmlToDokuWiki();
@@ -171,7 +174,7 @@ class TeleParser
         } catch (\Exception $e) {
             $msg = 'Ошибка: ' . $e->getMessage();
             echo $msg . "<br />";
-            $this->updatePageParsing($parsingId, ['message' => $msg]);
+            $this->updateResourceParsing($parsingId, ['message' => $msg]);
             $this->log($msg . "\n");
         }
 
@@ -183,7 +186,7 @@ class TeleParser
             $resSave = file_put_contents($localPathHtml, $html);
             if($resSave === false) {
                 $msg = sprintf('Cannot save file: "%s"', $localPathHtml);
-                $this->updatePageParsing($parsingId, ['message' => $msg]);
+                $this->updateResourceParsing($parsingId, ['message' => $msg]);
                 throw new \RuntimeException($msg);
             }
         }
@@ -193,12 +196,12 @@ class TeleParser
             $resSave = file_put_contents($localPathWiki, $wiki);
             if($resSave === false) {
                 $msg = sprintf('Cannot save file: "%s"', $localPathWiki);
-                $this->updatePageParsing($parsingId, ['message' => $msg]);
+                $this->updateResourceParsing($parsingId, ['message' => $msg]);
                 throw new \RuntimeException($msg);
             }
         }
 
-        $this->updatePageParsing($parsingId, ['file' => $localPathHtml]);
+        $this->updateResourceParsing($parsingId, ['file' => $localPathHtml]);
 
         $this->parsedUrls[$url] = $url;
         $cntPages = 0;
@@ -242,7 +245,7 @@ class TeleParser
             }
         });
 
-        $this->finishPageParsing($parsingId);
+        $this->finishResouceParsing($parsingId);
 
         // Replace links in HTML
         //$html = $this->replaceLinks($html, $baseDir, $domain);
@@ -295,17 +298,20 @@ class TeleParser
 
     /**
      * Store parsing into DB
-     * @param $url
+     * @param string $url
+     * @param string $type
      *
      * @return int
      */
-    private function startPageParsing($url): int
+    private function startResourceParsing(string $url, string $type, $parent_id = 0): int
     {
-        $stmt = $this->db->prepare('INSERT INTO parsing (start_time, url) VALUES (:start_time, :url)');
+        $stmt = $this->db->prepare('INSERT INTO parsing (start_time, url, type, parent_id) VALUES (:start_time, :url, :type, :parent_id)');
 
         $stmt->bindValue(':start_time', date('Y-m-d H:i:s'), SQLITE3_TEXT);
         $stmt->bindValue(':url', $url, SQLITE3_TEXT);
         $stmt->bindValue(':status', self::STATUS_START, SQLITE3_TEXT);
+        $stmt->bindValue(':type', $type, SQLITE3_TEXT);
+        $stmt->bindValue(':parent_id', $parent_id, SQLITE3_TEXT);
         $stmt->bindValue(':run_id', $this->run_id, SQLITE3_INTEGER);
 
         $stmt->execute();
@@ -315,11 +321,11 @@ class TeleParser
 
     /**
      * Update parsing status
-     * @param $id
+     * @param int $id
      *
      * @return void
      */
-    private function finishPageParsing($id)
+    private function finishResourceParsing(int $id): bool
     {
         $stmt = $this->db->prepare('UPDATE parsing SET finish_time = :finish_time, status = :status WHERE id = :id');
 
@@ -328,20 +334,22 @@ class TeleParser
         $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
 
         $stmt->execute();
+
+        return true;
     }
 
     /**
      * @param int   $id
      * @param array $fields
      *
-     * @return void
+     * @return bool
      */
-    private function updatePageParsing(int $id, array $fields)
+    private function updateResourceParsing(int $id, array $fields): bool
     {
         // check allowed fields
         foreach($fields as $k => $v) {
             if(!in_array($k, self::ALLOWED_FIELDS)) {
-                throw new \Exception("Unknown field: " . $k);
+                throw new \Exception("Недопустимое поле: " . $k);
             }
         }
 
@@ -358,6 +366,8 @@ class TeleParser
         }
 
         $stmt->execute();
+
+        return true;
     }
 
     /**
@@ -365,11 +375,10 @@ class TeleParser
      *
      * @param Crawler $crawler The crawler instance.
      * @param string $domain The domain of the current URL.
-     * @param string $localFileDir The local directory to save the resources.
      * @param string $html The HTML content to update.
      * @return string The updated HTML content.
      */
-    private function downloadAndReplaceResources(Crawler $crawler, $domain, $localFileDir, $html)
+    private function downloadAndReplaceResources(Crawler $crawler, $domain, $html, $parsingId)
     {
         $resources = [];
         $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
@@ -394,14 +403,16 @@ class TeleParser
             $localPath = $this->baseDir . '/html/' . $fileType . '/' . basename(parse_url($resourceUrl, PHP_URL_PATH));
 
             // save as debug
-            $this->log("- Save assets file: " . $resourceUrl . ' to ' . $localPath . "\n");
+            $this->log("- Save assets file: " . $resourceUrl . ' to ===> ' . $localPath . "\n");
 
             $localDir = dirname($localPath);
             if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
+                throw new \RuntimeException(sprintf('Директория "%s" не создана', $localDir));
             }
 
             $content = @file_get_contents($resourceUrl);
+
+            $assetParsingId = $this->startResourceParsing($resourceUrl, $fileType, $parsingId);
 
             // if content is not empty
             if($content) {
@@ -412,9 +423,15 @@ class TeleParser
                 $localDirs = implode("", array_fill(0, $dirsCount, '../'));
                 $localUrl = $localDirs . 'html/' . $fileType . '/' . basename($localPath);
 
+                $this->updateResourceParsing($assetParsingId, ['file' => $localUrl]);
+
                 // Replace URLs in the HTML content
                 $html = str_replace($resourceUrl, $localUrl, $html);
+            } else {
+                $this->updateResourceParsing($assetParsingId, ['message' => 'Error: empty file content.']);
             }
+
+            $this->finishResourceParsing($assetParsingId);
         }
 
         return $html;
@@ -443,7 +460,7 @@ class TeleParser
             $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
             $localDir  = dirname($localPath);
             if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
+                throw new \RuntimeException(sprintf('Директория "%s" не создана', $localDir));
             }
 
             $content = file_get_contents($resourceUrl);
@@ -457,18 +474,19 @@ class TeleParser
      *
      * @return mixed
      */
-    private function replaceLinks($html, $domain)
+    public function replaceLinksToLocal($html, $domain)
     {
         $crawler = new Crawler($html);
         $baseDir = $this->baseDir;
 
         $crawler->filter('a')->each(function (Crawler $node) use ($baseDir, $domain) {
             $href = $node->attr('href');
-            if ($href && strpos($href, $domain) === 0) {
-                $localPath = $baseDir . parse_url($href, PHP_URL_PATH); // . '.html';
+            if ($href && strpos($href, $domain) === 0) {        // @fixme: check here that page is downloaded locally or will be downloaded in future (queued)
+                $parsedUrl = parse_url($href);
+                $localPath = $parsedUrl['path'] . (mb_substr($parsedUrl['path'], -5) !== '.html' ? '.html' : '');
                 $node->getNode(0)->setAttribute('href', $localPath);
             } else {
-                $node->getNode(0)->setAttribute('onclick', 'return confirm("Cтраница не скачана, открыть ее в интернете?");');
+                $node->getNode(0)->setAttribute('onclick', 'confirmAndRedirect("' . $href . '", "Страница не скачана, открыть ее в интернете?"); return false;');
             }
         });
 
