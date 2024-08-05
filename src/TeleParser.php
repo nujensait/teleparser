@@ -61,6 +61,7 @@ class TeleParser
         try {
             $this->db->exec('CREATE TABLE IF NOT EXISTS runs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                local_dir VARCHAR(255), 
                 start_time DATETIME,
                 finish_time DATETIME,
                 start_url TEXT,
@@ -103,13 +104,14 @@ class TeleParser
         $limit      = $params['limit']   ?? 0;
         $visited    = $params['visited'] ?? [];
         $div        = $params['div']     ?? '';
+        $runId      = $params['run_id']  ?? null;
 
         // too deep?
         if ($depth < 0) {
             return;
         }
 
-        $parsingId = $this->startResourceParsing($url, 'html', 0);
+        $parsingId = $this->startResourceParsing($url, 'html', $runId, 0);
 
         // already parsed?
         if(in_array($url, $visited) || in_array($url, $this->parsedUrls)) {
@@ -161,7 +163,7 @@ class TeleParser
         $html = $this->utils->convertRelativeToAbsoluteLinks($html, $domain);
 
         // Download and replace external resources
-        $html = $this->downloadAndReplaceResources($crawler, $domain, $html, $parsingId);
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $html, $parsingId, $runId);
 
         // Replace links to local
         $html = $this->replaceLinksToLocal($html, $domain);
@@ -253,9 +255,10 @@ class TeleParser
     public function startParsing(array $params): int
     {
         // save run
-        $stmt = $this->db->prepare('INSERT INTO runs (start_time, start_url, depth, pages_limit, pattern, status) ' .
-                                         'VALUES (:start_time, :start_url, :depth, :pages_limit, :pattern, :status)');
+        $stmt = $this->db->prepare('INSERT INTO runs (local_dir, start_time, start_url, depth, pages_limit, pattern, status) ' .
+                                         'VALUES (:local_dir, :start_time, :start_url, :depth, :pages_limit, :pattern, :status)');
 
+        $stmt->bindValue(':local_dir', $params['local_dir'], SQLITE3_TEXT);
         $stmt->bindValue(':start_time', date('Y-m-d H:i:s'), SQLITE3_TEXT);
         $stmt->bindValue(':start_url', $params['url'] ?? '', SQLITE3_TEXT);
         $stmt->bindValue(':depth', $params['depth'] ?? 0, SQLITE3_INTEGER);
@@ -294,10 +297,12 @@ class TeleParser
      * Store parsing into DB
      * @param string $url
      * @param string $type
+     * @param int $run_id
+     * @param int $parent_id
      *
      * @return int
      */
-    private function startResourceParsing(string $url, string $type, $parent_id = 0): int
+    private function startResourceParsing(string $url, string $type, $run_id = null, $parent_id = 0): int
     {
         $stmt = $this->db->prepare('INSERT INTO parsing (start_time, url, type, parent_id) VALUES (:start_time, :url, :type, :parent_id)');
 
@@ -306,7 +311,7 @@ class TeleParser
         $stmt->bindValue(':status', self::STATUS_START, SQLITE3_TEXT);
         $stmt->bindValue(':type', $type, SQLITE3_TEXT);
         $stmt->bindValue(':parent_id', $parent_id, SQLITE3_TEXT);
-        $stmt->bindValue(':run_id', $this->run_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':run_id', $run_id, SQLITE3_INTEGER);
 
         $stmt->execute();
 
@@ -370,9 +375,11 @@ class TeleParser
      * @param Crawler $crawler The crawler instance.
      * @param string $domain The domain of the current URL.
      * @param string $html The HTML content to update.
+     * @param int $parsingId
+     * @param int $runId
      * @return string The updated HTML content.
      */
-    private function downloadAndReplaceResources(Crawler $crawler, $domain, $html, $parsingId)
+    private function downloadAndReplaceResources(Crawler $crawler, $domain, $html, $parsingId, $runId = null)
     {
         $resources = [];
         $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
@@ -389,7 +396,7 @@ class TeleParser
         foreach ($resources as $resourceUrl) {
 
             // convert relative path to absolute
-            if(strpos($resourceUrl, $domain) !== 0) {
+            if(strpos($resourceUrl, $domain) !== 0 && substr($resourceUrl, 0, 4) !== 'http') {
                 $resourceUrl = $domain . $resourceUrl;
             }
 
@@ -403,7 +410,7 @@ class TeleParser
 
             // save as debug
             $this->log("- Save assets file: " . $resourceUrl . ' to ===> ' . $localPath . "\n");
-            $assetParsingId = $this->startResourceParsing($resourceUrl, $fileType, $parsingId);
+            $assetParsingId = $this->startResourceParsing($resourceUrl, $fileType, $runId, $parsingId);
 
             $localDir = dirname($localPath);
             if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
@@ -419,7 +426,7 @@ class TeleParser
 
                 $dirsCount = $this->utils->countDirectoriesInPath($localPath);
                 $localDirs = implode("", array_fill(0, $dirsCount, '../'));
-                $localUrl = $localDirs . 'html/' . $fileType . '/' . basename($localPath);
+                $localUrl = $localDirs . $fileType . '/' . basename($localPath);
 
                 $this->updateResourceParsing($assetParsingId, ['file' => $localUrl, 'status' => self::STATUS_PROCESS]);
 

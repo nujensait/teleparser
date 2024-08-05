@@ -38,6 +38,7 @@ class TeleParserRunner
         try {
             $params = [
                 'url'       => $url,
+                'local_dir' => $baseDir,
                 'pattern'   => $pattern,
                 'depth'     => $depth,
                 'limit'     => $limit,
@@ -45,7 +46,8 @@ class TeleParserRunner
                 'div'       => $div
             ];
             /** @var TeleParser $parser */
-            $parser->startParsing($params);
+            $run_id = $parser->startParsing($params);
+            $params['run_id'] = $run_id;        // remember parsingRunId
             $parser->downloadPage($params);
             $parser->finishParsing($params);
         } catch(\Throwable $e) {
