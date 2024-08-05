@@ -13,13 +13,14 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class TeleParser
 {
-    const STATUS_INIT   = 'init';
-    const STATUS_START  = 'start';
-    const STATUS_FINISH = 'finish';
-    const STATUS_SKIP   = 'skip';
-    const STATUS_ERROR  = 'error';
+    const STATUS_INIT       = 'init';
+    const STATUS_START      = 'start';
+    const STATUS_PROCESS    = 'process';
+    const STATUS_FINISH     = 'finish';
+    const STATUS_SKIP       = 'skip';
+    const STATUS_ERROR      = 'error';
 
-    const ALLOWED_FIELDS = ['start_time', 'finish_time', 'url', 'file', 'status', 'message'];
+    const ALLOWED_FIELDS    = ['start_time', 'finish_time', 'url', 'file', 'status', 'message'];
 
     private string $baseDir = 'downloads';          // directory to save htmls
     private array $parsedUrls = [];                 // parsed links array
@@ -112,7 +113,7 @@ class TeleParser
 
         // already parsed?
         if(in_array($url, $visited) || in_array($url, $this->parsedUrls)) {
-            $this->updateResourceParsing($parsingId, ['status' => self::STATUS_SKIP, 'message' => 'Already parsed.']);
+            $this->updateResourceParsing($parsingId, ['status' => self::STATUS_SKIP, 'message' => 'Файл уже сохранен.']);
             return;
         }
 
@@ -148,7 +149,6 @@ class TeleParser
             $localPathWiki .= 'index.txt';
         }
 
-
         $localDirWiki = dirname($localPathWiki);
         if (!file_exists($localDirWiki)) {
             if (!mkdir($localDirWiki, 0777, true) && !is_dir($localDirWiki)) {
@@ -161,7 +161,7 @@ class TeleParser
         $html = $this->utils->convertRelativeToAbsoluteLinks($html, $domain);
 
         // Download and replace external resources
-        $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html, $parsingId);
+        $html = $this->downloadAndReplaceResources($crawler, $domain, $html, $parsingId);
 
         // Replace links to local
         $html = $this->replaceLinksToLocal($html, $domain);
@@ -174,19 +174,19 @@ class TeleParser
         } catch (\Exception $e) {
             $msg = 'Ошибка: ' . $e->getMessage();
             echo $msg . "<br />";
-            $this->updateResourceParsing($parsingId, ['message' => $msg]);
+            $this->updateResourceParsing($parsingId, ['message' => $msg, 'status' => self::STATUS_ERROR]);
             $this->log($msg . "\n");
         }
 
-        // Download html
+        // Download assets
         //$this->downloadResources($crawler, $domain, $localDirHtml);
 
         // Save the modified HTML
         if($html) {
             $resSave = file_put_contents($localPathHtml, $html);
             if($resSave === false) {
-                $msg = sprintf('Cannot save file: "%s"', $localPathHtml);
-                $this->updateResourceParsing($parsingId, ['message' => $msg]);
+                $msg = sprintf('Не удается сохранить файл: "%s"', $localPathHtml);
+                $this->updateResourceParsing($parsingId, ['message' => $msg, 'status' => self::STATUS_ERROR]);
                 throw new \RuntimeException($msg);
             }
         }
@@ -195,19 +195,17 @@ class TeleParser
         if($wiki) {
             $resSave = file_put_contents($localPathWiki, $wiki);
             if($resSave === false) {
-                $msg = sprintf('Cannot save file: "%s"', $localPathWiki);
-                $this->updateResourceParsing($parsingId, ['message' => $msg]);
+                $msg = sprintf('Не удается сохранить файл: "%s"', $localPathWiki);
+                $this->updateResourceParsing($parsingId, ['message' => $msg, 'status' => self::STATUS_ERROR]);
                 throw new \RuntimeException($msg);
             }
         }
 
-        $this->updateResourceParsing($parsingId, ['file' => $localPathHtml]);
+        $this->updateResourceParsing($parsingId, ['file' => $localPathHtml, 'status' => self::STATUS_PROCESS]);
 
         $this->parsedUrls[$url] = $url;
         $cntPages = 0;
         $breakProcess = false;
-
-        //die('ssss');
 
         // Process internal links/pages
         $crawler->filter('a')->each(function (Crawler $node) use ($domain, $pattern, $depth, &$visited, $div, $limit, &$cntPages, &$breakProcess) {
@@ -245,11 +243,7 @@ class TeleParser
             }
         });
 
-        $this->finishResouceParsing($parsingId);
-
-        // Replace links in HTML
-        //$html = $this->replaceLinks($html, $baseDir, $domain);
-        //file_put_contents($localPath, $html);
+        $this->finishResourceParsing($parsingId);
     }
 
     /**
@@ -325,7 +319,7 @@ class TeleParser
      *
      * @return void
      */
-    private function finishResourceParsing(int $id): bool
+    public function finishResourceParsing(int $id): bool
     {
         $stmt = $this->db->prepare('UPDATE parsing SET finish_time = :finish_time, status = :status WHERE id = :id');
 
@@ -394,6 +388,11 @@ class TeleParser
 
         foreach ($resources as $resourceUrl) {
 
+            // convert relative path to absolute
+            if(strpos($resourceUrl, $domain) !== 0) {
+                $resourceUrl = $domain . $resourceUrl;
+            }
+
             // determine resource type
             $fileType = $this->utils->getFileTypeFromUrl($resourceUrl);
             if(!in_array($fileType, ['css', 'js', 'image'])) {
@@ -404,6 +403,7 @@ class TeleParser
 
             // save as debug
             $this->log("- Save assets file: " . $resourceUrl . ' to ===> ' . $localPath . "\n");
+            $assetParsingId = $this->startResourceParsing($resourceUrl, $fileType, $parsingId);
 
             $localDir = dirname($localPath);
             if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
@@ -412,23 +412,21 @@ class TeleParser
 
             $content = @file_get_contents($resourceUrl);
 
-            $assetParsingId = $this->startResourceParsing($resourceUrl, $fileType, $parsingId);
-
             // if content is not empty
             if($content) {
                 // save resource locally
                 file_put_contents($localPath, $content);
 
-                $dirsCount = $this->utils->countDirectoriesInPath($localPath) + 1;
+                $dirsCount = $this->utils->countDirectoriesInPath($localPath);
                 $localDirs = implode("", array_fill(0, $dirsCount, '../'));
                 $localUrl = $localDirs . 'html/' . $fileType . '/' . basename($localPath);
 
-                $this->updateResourceParsing($assetParsingId, ['file' => $localUrl]);
+                $this->updateResourceParsing($assetParsingId, ['file' => $localUrl, 'status' => self::STATUS_PROCESS]);
 
                 // Replace URLs in the HTML content
                 $html = str_replace($resourceUrl, $localUrl, $html);
             } else {
-                $this->updateResourceParsing($assetParsingId, ['message' => 'Error: empty file content.']);
+                $this->updateResourceParsing($assetParsingId, ['message' => 'Error: empty file content.', 'status' => self::STATUS_ERROR]);
             }
 
             $this->finishResourceParsing($assetParsingId);
