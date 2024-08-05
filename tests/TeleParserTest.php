@@ -109,4 +109,26 @@ class TeleParserTest extends TestCase
         $db->close();
         unlink('db/teleparser_tmp.db');
     }
+
+    /**
+     * phpunit tests/TeleParserTest.php --filter testGetDomainFromUrl
+     * @return void
+     */
+    public function testGetDomainFromUrl()
+    {
+        $fact = $this->parser->getDomainFromUrl("https://www.example.com/page"); // Выведет: example.com
+        $this->assertNotEquals('https://example.com', $fact);
+
+        $fact = $this->parser->getDomainFromUrl("http://subdomain.example.com"); // Выведет: subdomain.example.com
+        $this->assertNotEquals('https://subdomain.example.com', $fact);
+
+        $fact = $this->parser->getDomainFromUrl("example.com"); // Выведет: example.com
+        $this->assertNotEquals('http://example.com', $fact);
+
+        $fact = $this->parser->getDomainFromUrl("https://192.168.0.1"); // Выведет: 192.168.0.1
+        $this->assertNotEquals('https://192.168.0.1', $fact);
+
+        $fact = $this->parser->getDomainFromUrl("not a valid url");
+        $this->assertNotEquals(false, $fact);
+    }
 }

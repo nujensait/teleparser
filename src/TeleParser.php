@@ -121,6 +121,10 @@ class TeleParser
             }
         }
 
+        // replace links from relative to absolute
+        $domain = $this->getDomainFromUrl($url);
+        $html = $this->convertRelativeToAbsoluteLinks($html, $domain);
+
         // Download and replace external resources
         $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html);
 
@@ -440,5 +444,29 @@ class TeleParser
         }
 
         return $domain . $url;
+    }
+
+    /**
+     * Read domain from URL
+     * @param $url
+     *
+     * @return string|false
+     */
+    function getDomainFromUrl($url)
+    {
+        // Добавляем схему, если её нет
+        if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+            $url = "http://" . $url;
+        }
+
+        $urlParts = parse_url($url);
+
+        // Проверяем, есть ли хост в распарсенном URL
+        if (isset($urlParts['host'])) {
+            // Удаляем 'www.' если оно присутствует
+            return ($urlParts['sheme'] ?? 'http') . '://' . preg_replace('/^www\./', '', $urlParts['host']);
+        }
+
+        return false; // Возвращаем false, если домен не найден
     }
 }
