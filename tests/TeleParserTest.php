@@ -12,6 +12,7 @@ namespace Tests;
 require_once __DIR__ . '/../src/TeleParser.php';
 
 use PHPUnit\Framework\TestCase;
+use src\HtmlUtils;
 use src\TeleParser;
 
 class TeleParserTest extends TestCase
@@ -21,6 +22,10 @@ class TeleParserTest extends TestCase
      */
     protected $parser;
 
+    /**
+     * @var HtmlUtils
+     */
+    protected $utils;
 
     private $baseDir;
     
@@ -30,6 +35,7 @@ class TeleParserTest extends TestCase
     protected function setUp(): void
     {
         $this->baseDir = __DIR__ . '/downloads/teleparser_test_' . uniqid();
+        $this->utils = new HtmlUtils();
 
         mkdir($this->baseDir);
 
@@ -37,25 +43,11 @@ class TeleParserTest extends TestCase
     }
 
     /**
-     * Test convert links to absolute
-     */
-    public function testConvertRelativeToAbsoluteLinks()
-    {
-        $html     = '<a href="/page">Link</a><img src="/assets/images/parser.jpg" alt="alt">';
-        $domain   = 'https://example.com';
-        $result   = $this->parser->convertRelativeToAbsoluteLinks($html, $domain);
-
-        $expected = '<a href="https://example.com/page">Link</a><img src="https://example.com/assets/images/parser.jpg" alt="alt">';
-
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
      * @return void
      */
     protected function tearDown(): void
     {
-        $this->parser->deleteDirectory($this->baseDir);
+        $this->utils->deleteDirectory($this->baseDir);
     }
 
     /**
@@ -68,23 +60,6 @@ class TeleParserTest extends TestCase
         $this->assertEquals('https://example.com/page', $this->parser->convertUrl('/page', $domain));
         $this->assertEquals('https://example.com/image.jpg', $this->parser->convertUrl('image.jpg', $domain));
         $this->assertEquals('https://other.com/page', $this->parser->convertUrl('https://other.com/page', $domain));
-    }
-
-    /**
-     * @return void
-     */
-    public function fixme_testDeleteDirectory()
-    {
-        $testDir = $this->baseDir . '/delete_test';
-        mkdir($testDir);
-        file_put_contents($testDir . '/test.txt', 'test content');
-
-        $this->assertTrue(file_exists($testDir));
-        $this->assertTrue(file_exists($testDir . '/test.txt'));
-
-        $this->parser->deleteDirectory($testDir);
-
-        $this->assertFalse(file_exists($testDir));
     }
 
     /**
@@ -108,27 +83,5 @@ class TeleParserTest extends TestCase
 
         $db->close();
         unlink('db/teleparser_tmp.db');
-    }
-
-    /**
-     * phpunit tests/TeleParserTest.php --filter testGetDomainFromUrl
-     * @return void
-     */
-    public function testGetDomainFromUrl()
-    {
-        $fact = $this->parser->getDomainFromUrl("https://www.example.com/page"); // Выведет: example.com
-        $this->assertNotEquals('https://example.com', $fact);
-
-        $fact = $this->parser->getDomainFromUrl("http://subdomain.example.com"); // Выведет: subdomain.example.com
-        $this->assertNotEquals('https://subdomain.example.com', $fact);
-
-        $fact = $this->parser->getDomainFromUrl("example.com"); // Выведет: example.com
-        $this->assertNotEquals('http://example.com', $fact);
-
-        $fact = $this->parser->getDomainFromUrl("https://192.168.0.1"); // Выведет: 192.168.0.1
-        $this->assertNotEquals('https://192.168.0.1', $fact);
-
-        $fact = $this->parser->getDomainFromUrl("not a valid url");
-        $this->assertNotEquals(false, $fact);
     }
 }

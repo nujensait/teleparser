@@ -30,7 +30,7 @@ class TeleParserRunner
         echo "<ol>";
         echo "<li><p>Начало парсинга ...</p></li>\n";
         if(is_dir($baseDir)) {
-            $parser->deleteDirectory($baseDir);
+            $parser->utils->deleteDirectory($baseDir);
             echo "<li><p>Удалена старая папка с файлами от предыдущего парсинга: <br /><pre>" . $baseDir . "</pre></p></li>\n";
         }
 

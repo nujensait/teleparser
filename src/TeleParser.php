@@ -4,9 +4,11 @@ namespace src;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/HtmlToDokuWiki.php';
+require_once __DIR__ . '/HtmlUtils.php';
 
-use Goutte\Client;
+use src\HtmlUtils;
 use src\HtmlToDokuWiki;
+use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class TeleParser
@@ -25,6 +27,7 @@ class TeleParser
     {
         $this->baseDir = $baseDir;
         $this->initDatabase();
+        $this->utils = new HtmlUtils();
     }
 
     public function __destruct()
@@ -120,8 +123,8 @@ class TeleParser
         }
 
         // replace links from relative to absolute
-        $domain = $this->getDomainFromUrl($url);
-        $html = $this->convertRelativeToAbsoluteLinks($html, $domain);
+        $domain = $this->utils->getDomainFromUrl($url);
+        $html = $this->utils->convertRelativeToAbsoluteLinks($html, $domain);
 
         // Download and replace external resources
         $html = $this->downloadAndReplaceResources($crawler, $domain, $localDirHtml, $html);
@@ -369,108 +372,5 @@ class TeleParser
         });
 
         return $crawler->html();
-    }
-
-    /**
-     * Deletes a directory and all its contents (files and subdirectories).
-     *
-     * @param string $dir The path to the directory to delete.
-     * @return bool True on success, false on failure.
-     */
-    public function deleteDirectory($dir)
-    {
-        if (!is_dir($dir)) {
-            return false;
-        }
-
-        $items = array_diff(scandir($dir), ['.', '..']);
-
-        foreach ($items as $item) {
-            $path = $dir . DIRECTORY_SEPARATOR . $item;
-            if (is_dir($path)) {
-                $this->deleteDirectory($path);
-            } else {
-                unlink($path);
-            }
-        }
-
-        return rmdir($dir);
-    }
-
-    /**
-     * Make absolute links in html
-     * @param string $html
-     * @param string $domain
-     *
-     * @return string
-     */
-    public function convertRelativeToAbsoluteLinks(string $html, string $domain): string
-    {
-        // Убедимся, что домен заканчивается на слеш
-        $domain = rtrim($domain, '/') . '/';
-
-        // Заменяем ссылки в href атрибутах
-        $html = preg_replace_callback(
-            '/\shref=(["\'])(.+?)\1/i',
-            function($matches) use ($domain) {
-                return ' href=' . $matches[1] . $this->convertUrl($matches[2], $domain) . $matches[1];
-            },
-            $html
-        );
-
-        // Заменяем ссылки в src атрибутах
-        $html = preg_replace_callback(
-            '/\ssrc=(["\'])(.+?)\1/i',
-            function($matches) use ($domain) {
-                return ' src=' . $matches[1] . $this->convertUrl($matches[2], $domain) . $matches[1];
-            },
-            $html
-        );
-
-        return $html;
-    }
-
-    /**
-     * @param string $url
-     * @param string $domain
-     *
-     * @return string
-     */
-    public function convertUrl(string $url, string $domain): string
-    {
-        // Проверяем, является ли URL относительным
-        if (substr($url, 0, 2) === '//' || preg_match("~^(?:f|ht)tps?://~i", $url)) {
-            return $url; // URL уже абсолютный
-        }
-
-        if ($url[0] === '/') {
-            return $domain . ltrim($url, '/');
-        }
-
-        return $domain . $url;
-    }
-
-    /**
-     * Read domain from URL
-     * @param $url
-     *
-     * @return string|false
-     */
-    function getDomainFromUrl($url)
-    {
-        // Добавляем схему, если её нет
-        if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-            $url = "http://" . $url;
-        }
-
-        $urlParts = parse_url($url);
-
-        // Проверяем, есть ли хост в распарсенном URL
-        if (isset($urlParts['host'])) {
-            // Удаляем 'www.' если оно присутствует
-            return ($urlParts['sheme'] ?? 'http') . '://' . preg_replace('/^www\./', '', $urlParts['host']);
-        }
-
-        return false; // Возвращаем false, если домен не найден
     }
 }
