@@ -59,10 +59,10 @@ class TeleParser
      */
     public function downloadPage($params)
     {
-        $depth      = $params['depth']   ?? 0;
-        $limit      = $params['limit']   ?? 0;
         $url        = $params['url']     ?? '';
         $pattern    = $params['pattern'] ?? '';
+        $depth      = $params['depth']   ?? 0;
+        $limit      = $params['limit']   ?? 0;
         $visited    = $params['visited'] ?? [];
         $div        = $params['div']     ?? '';
 
@@ -102,10 +102,8 @@ class TeleParser
 
         $localDirHtml = dirname($localPathHtml);
 
-        if (!file_exists($localDirHtml)) {
-            if (!mkdir($localDirHtml, 0777, true) && !is_dir($localDirHtml)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirHtml));
-            }
+        if (!file_exists($localDirHtml) && !mkdir($localDirHtml, 0777, true) && !is_dir($localDirHtml)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDirHtml));
         }
 
         // Same for wiki
@@ -132,13 +130,13 @@ class TeleParser
         $converter = new HtmlToDokuWiki();
         try {
             $wiki = $converter->convert($html, $div);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo 'Ошибка: ' . $e->getMessage() . "<br />";
             $this->log('Ошибка: ' . $e->getMessage());
         }
 
-            // Download html
-        //$this->downloadResources($crawler, $domain, $localDir);
+        // Download html
+        $this->downloadResources($crawler, $domain, $localDirHtml);
 
         // Save the modified HTML
         $resSave = file_put_contents($localPathHtml, $html);
@@ -285,26 +283,34 @@ class TeleParser
             $tag = $node->nodeName();
             $attr = ($tag === 'link') ? 'href' : 'src';
             $url = $node->attr($attr);
-            if ($url && strpos($url, $domain) === 0) {
+            //echo "<pre>"; var_dump($url . '<==>' . $domain); var_dump($url && strpos($url, $domain) === 0); die();
+
+            if (1) { // $url && strpos($url, $domain) === 0) {      // skip domain check: assets can be external
                 $resources[] = $url;
             }
         });
 
         foreach ($resources as $resourceUrl) {
-            $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);
+            //$localPath = $localDir . '/' . parse_url($resourceUrl, PHP_URL_PATH);
+            $localPath = $localDir . '/' . basename(parse_url($resourceUrl, PHP_URL_PATH));
+
+//echo("<li>" . $resourceUrl . '===>' . parse_url($resourceUrl, PHP_URL_PATH) . ' ==> ' . $localPath) . "</li>\n";
+
             $localDir = dirname($localPath);
 
-            if (!file_exists($localDir)) {
-                if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
-                }
+            if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
             }
 
-            $content = file_get_contents($resourceUrl);
-            file_put_contents($localPath, $content);
+            $content = @file_get_contents($resourceUrl);
 
-            // Replace URLs in the HTML content
-            $html = str_replace($resourceUrl, $localPath, $html);
+            // if content is not empty
+            if($content) {
+                file_put_contents($localPath, $content);
+
+                // Replace URLs in the HTML content
+                $html = str_replace($resourceUrl, basename($localPath), $html);
+            }
         }
 
         return $html;
@@ -332,10 +338,8 @@ class TeleParser
         foreach ($resources as $resourceUrl) {
             $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
             $localDir  = dirname($localPath);
-            if (!file_exists($localDir)) {
-                if (!mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
-                }
+            if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $localDir));
             }
 
             $content = file_get_contents($resourceUrl);
