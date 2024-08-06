@@ -114,19 +114,19 @@ if ($selectedTemplate && isset($config[$selectedTemplate])) {
 
             <div class="input-field">
                 <label for="html">Код html: <small class="req">*</small></label>
-                <textarea id="html" name="html" required value="<?= isset($_REQUEST['html']) ? htmlspecialchars($_REQUEST['html'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '' ?>" class="codeText"></textarea>
+                <textarea id="html" name="html" required class="codeText"><?= isset($_REQUEST['html']) ? htmlspecialchars($_REQUEST['html'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : '' ?></textarea>
             </div>
 
             <div class="input-field">
                 <input type="text" id="divid" name="divid" value="<?= $templateData['div'] ?? (isset($_REQUEST['divid']) ? $_REQUEST['divid'] : '') ?>"/>
-                <label for="div">Парсить контент только внутри указанного div (id/class): </label>
+                <label for="div">Парсить контент только внутри div c указанным id/class: </label>
             </div>
 
             <button class="btn waves-effect waves-light" type="submit" name="action" style="margin-right:50px;">Конвертировать
                 <i class="material-icons right">send</i>
             </button>
 
-            <button class="btn waves-effect waves-light" type="button" id="resetButton">Сброс
+            <button class="btn waves-effect waves-light" type="button" id="resetHtmlButton">Сброс
                 <i class="material-icons right">refresh</i>
             </button>
         </form>

@@ -54,7 +54,48 @@ document.getElementById('resetButton').addEventListener('click', function() {
     }
 });
 
-// copy results to clipboard
+/**
+ * Reset html conversion form
+ */
+document.getElementById('resetHtmlButton').addEventListener('click', function() {
+    // Получаем форму по ID
+    var form = document.getElementById('convForm');
+
+    event.preventDefault();
+
+    // Очистка выбора шаблона
+    const templateSelect = document.getElementById("templateSelect");
+    if (templateSelect) {
+        templateSelect.selectedIndex = 0;
+    }
+
+    // Очистка поля HTML
+    const htmlTextarea = document.getElementById("html");
+    if (htmlTextarea) {
+        htmlTextarea.value = '';
+    }
+
+    // Очистка поля Wiki
+    const htmlTextareaWiki = document.getElementById("wiki");
+    if (htmlTextareaWiki) {
+        htmlTextareaWiki.value = '';
+    }
+
+    // Очистка поля для указания id/class
+    const divIdInput = document.getElementById("divid");
+    if (divIdInput) {
+        divIdInput.value = '';
+    }
+
+    var labels = form.getElementsByTagName('label');
+    for (var i = 0; i < labels.length; i++) {
+        labels[i].classList.remove('active');
+    }
+});
+
+/**
+ * Copy results to clipboard
+ */
 document.getElementById('copyButton').addEventListener('click', function() {
     var textarea = document.getElementById('wiki');
     textarea.select();

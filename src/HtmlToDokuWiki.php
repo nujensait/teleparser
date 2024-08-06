@@ -18,13 +18,15 @@ class HtmlToDokuWiki
     public function convert(string $html, string $div = '')
     {
         // Загружаем HTML с помощью DOMDocument
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($html);
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->encoding = 'UTF-8';
 
-        if($div === '') {
-            $body = $dom->getElementsByTagName('body')->item(0);              // full HTML
-        } else {
-            $body = $dom->getElementById($div);          // content part of HTML
+        @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        if($div === '' && strstr($html, "<body")) {                                 // full HTML with body
+            $body = $dom->getElementsByTagName('body')->item(0);
+        } else if($div) {
+            $body = $dom->getElementById($div);                                            // content part of HTML
             // also try to find by class:
             if ($body === null) {
                 // Find elements by class name
@@ -33,11 +35,17 @@ class HtmlToDokuWiki
                     $body = $elements[0];
                 }
             }
+        } else {                                                                            // custom html
+            $body = $dom;
+        }
+
+        if (!$body) {
+            throw new \Exception("Ошибка обработки кода html (проверьте его корректность).");
         }
 
         // nothing found?
-        if ($body === null) {
-            throw new \Exception("/Элемент html с id='{$div}' не найден.");
+        if ($div && $body === null) {
+            throw new \Exception("Элемент html с id='{$div}' не найден.");
         }
 
         $dokuWikiContent = $this->convertNode($body);
@@ -136,7 +144,7 @@ class HtmlToDokuWiki
 
     private function convertText($text)
     {
-        return htmlspecialchars($text->wholeText);
+        return html_entity_decode($text->wholeText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     private function convertHeading($element, $level)
@@ -233,12 +241,12 @@ class HtmlToDokuWiki
 
     private function convertPreformatted($element)
     {
-        return '<code>' . htmlspecialchars($element->textContent) . '</code>';
+        return '<code>' . htmlspecialchars($element->textContent, ENT_QUOTES, 'UTF-8') . '</code>';
     }
 
     private function convertCode($element)
     {
-        return '`' . htmlspecialchars($element->textContent) . '`';
+        return '`' . htmlspecialchars($element->textContent, ENT_QUOTES, 'UTF-8') . '`';
     }
 
     private function convertGeneric($element)
@@ -258,13 +266,13 @@ class HtmlToDokuWiki
     private function cleanOutput(string $output)
     {
         // Remove empty lines and leading/trailing spaces
-        $output = preg_replace("/^\s+|\s+$/m", '', $output);
+        $output = preg_replace("/^\s+|\s+$/mu", '', $output);
 
         // remove empty lines
-        $output = preg_replace("/\n{2,}/", "\n", $output);
+        $output = preg_replace("/\n{2,}/u", "\n", $output);
 
         // add \n after headers:
-        $output = preg_replace( '/(=+ .*? =+)/', "$1\n", $output);
+        $output = preg_replace('/(=+ .*? =+)/u', "$1\n", $output);
 
         return trim($output);
     }
@@ -284,32 +292,32 @@ class HtmlToDokuWiki
         }
 
         // Проверка правильного форматирования заголовков
-        if (preg_match_all('/^(=+[^=]+?=+)$/m', $content, $matches)) {
+        if (preg_match_all('/^(=+[^=]+?=+)$/mu', $content, $matches)) {
             foreach ($matches[0] as $heading) {
-                if (!preg_match('/^=+ .+? =+$/', $heading)) {
+                if (!preg_match('/^=+ .+? =+$/u', $heading)) {
                     $errors[] = "Неверный формат заголовка: $heading";
                 }
             }
         }
 
         // Проверка на наличие незакрытых тегов
-        if (preg_match('/<[^\/>]*>/', $content)) {
+        if (preg_match('/<[^\/>]*>/u', $content)) {
             $errors[] = "Найдены незакрытые теги.";
         }
 
         // Проверка корректности ссылок
-        if (preg_match_all('/\[\[(.*?)\]\]/', $content, $matches)) {
+        if (preg_match_all('/\[\[(.*?)\]\]/u', $content, $matches)) {
             foreach ($matches[1] as $link) {
-                if (!preg_match('/^(.+?\|.+?)$/', $link) && !filter_var($link, FILTER_VALIDATE_URL)) {
+                if (!preg_match('/^(.+?\|.+?)$/u', $link) && !filter_var($link, FILTER_VALIDATE_URL)) {
                     $errors[] = "Неверный формат ссылки: $link";
                 }
             }
         }
 
         // Проверка корректности изображений
-        if (preg_match_all('/\{\{(.*?)\}\}/', $content, $matches)) {
+        if (preg_match_all('/\{\{(.*?)\}\}/u', $content, $matches)) {
             foreach ($matches[1] as $image) {
-                if (!preg_match('/^(.+?\|.*)$/', $image)) {
+                if (!preg_match('/^(.+?\|.*)$/u', $image)) {
                     $errors[] = "Неверный формат тега изображения: $image";
                 }
             }

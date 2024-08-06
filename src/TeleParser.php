@@ -424,7 +424,7 @@ class TeleParser
                 // save resource locally
                 file_put_contents($localPath, $content);
 
-                $dirsCount = $this->utils->countDirectoriesInPath($localPath);
+                $dirsCount = $this->utils->countDirectoriesInPath(parse_url($resourceUrl, PHP_URL_PATH)) + 3; //$localPath);
                 $localDirs = implode("", array_fill(0, $dirsCount, '../'));
                 $localUrl = $localDirs . $fileType . '/' . basename($localPath);
 
@@ -443,37 +443,6 @@ class TeleParser
     }
 
     /**
-     * @param Crawler $crawler
-     * @param         $domain
-     * @param         $localDir
-     *
-     * @return void
-     */
-    private function downloadResources(Crawler $crawler, $domain, $localDir)
-    {
-        $resources = [];
-        $crawler->filter('link[rel="stylesheet"], script[src], img[src]')->each(function (Crawler $node) use (&$resources, $domain) {
-            $tag  = $node->nodeName();
-            $attr = ($tag === 'link') ? 'href' : 'src';
-            $url  = $node->attr($attr);
-            if ($url && strpos($url, $domain) === 0) {
-                $resources[] = $url;
-            }
-        });
-
-        foreach ($resources as $resourceUrl) {
-            $localPath = $this->baseDir . parse_url($resourceUrl, PHP_URL_PATH);  // . '.html';
-            $localDir  = dirname($localPath);
-            if (!file_exists($localDir) && !mkdir($localDir, 0777, true) && !is_dir($localDir)) {
-                throw new \RuntimeException(sprintf('Директория "%s" не создана', $localDir));
-            }
-
-            $content = file_get_contents($resourceUrl);
-            file_put_contents($localPath, $content);
-        }
-    }
-
-    /**
      * @param $html
      * @param $domain
      *
@@ -482,9 +451,8 @@ class TeleParser
     public function replaceLinksToLocal($html, $domain)
     {
         $crawler = new Crawler($html);
-        $baseDir = $this->baseDir;
 
-        $crawler->filter('a')->each(function (Crawler $node) use ($baseDir, $domain) {
+        $crawler->filter('a')->each(function (Crawler $node) use ($domain) {
             $href = $node->attr('href');
             if ($href && strpos($href, $domain) === 0) {        // @fixme: check here that page is downloaded locally or will be downloaded in future (queued)
                 $parsedUrl = parse_url($href);
